@@ -14,13 +14,13 @@ def print_table(data, headers, start=0, end=10):
         print(format_str.format(*row))
 
 def main():
-    header_data, part_data = unpacker(DATA_PATH + "Puppi_adj4.dump")
+    header_data, part_data = unpacker(DATA_PATH + "Puppi_fix104.dump")
     columns_head = ["start_idx", "vld_header", "err_bit", "lr_number", "orbit_cnt", "bx_cnt", "n_cand"]
     columns_part = ["start_idx", "pdg_id", "phi", "eta", "pt"]
 
     print_table(header_data, columns_head)
     print("\n\n\n")
-    print_table(part_data, columns_part, start=0, end=49)
+    print_table(part_data, columns_part, start=0, end=5)
 
 if __name__ == "__main__":
     main()
