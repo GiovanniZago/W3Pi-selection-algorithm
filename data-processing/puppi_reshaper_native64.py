@@ -1,9 +1,10 @@
 from puppi_unpacker_native64 import unpack_header 
 import struct
 
-EV_SIZE = 104
+ADJ_TO = 4
+DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
 
-def puppi_reshaper_native64(puppi_old, puppi_new, ev_size=EV_SIZE):
+def puppi_reshaper_native64(puppi_old, puppi_new, adj_to=ADJ_TO):
     ii          = 0
     is_header   = True
     p_count     = 0
@@ -23,16 +24,15 @@ def puppi_reshaper_native64(puppi_old, puppi_new, ev_size=EV_SIZE):
                     row_data = unpack_header(row_bytes)
                     p_count = row_data["n_cand"]
 
-                    if p_count <= ev_size:
-                        word = struct.pack("Q", (ev_size << 56) | p_count)
-                        puppi_dump_new.write(word)
-                        p_to_append = ev_size - p_count
-
+                    rem = p_count % adj_to
+                    if rem:
+                        ev_size = (int(p_count / adj_to) + 1) * adj_to
                     else:
-                        puppi_dump_new.write(row_bytes)
-                        p_to_append = 0
-                        if p_count > ev_size:
-                            print(f"Event with BX_COUNT = {row_data['bx_cnt']} has {p_count} (>{EV_SIZE})")
+                        ev_size = p_count
+
+                    word = struct.pack("Q", (ev_size << 56) | (row_data["bx_cnt"] << 12) | p_count)
+                    puppi_dump_new.write(word)
+                    p_to_append = ev_size - p_count
 
                     is_header = False
 
@@ -48,7 +48,7 @@ def puppi_reshaper_native64(puppi_old, puppi_new, ev_size=EV_SIZE):
                         p_counter = 0
 
 def main():
-    puppi_reshaper_native64("./data/Puppi.dump", f"./data/Puppi{EV_SIZE}.dump")
+    puppi_reshaper_native64(DATA_PATH + "Puppi.dump", DATA_PATH + f"Puppi_adj{ADJ_TO}.dump")
 
 if __name__ == "__main__":
     main()
