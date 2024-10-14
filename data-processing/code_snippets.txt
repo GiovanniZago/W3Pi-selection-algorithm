@@ -1,0 +1,10 @@
+# CHECK VALID HEADER
+first_byte = next(iter(row_bytes)) # assuming big endian (the most significative byte comes first)
+first_byte_8bits = first_byte.bit_length() == 8
+first_byte_valid = (first_byte >> 6) & 0b11 == 0b10
+if ((not first_byte_8bits) or (not first_byte_valid)) :
+    return 1 # if the length of the first byte from the left (big endian) is not 8, and the first two bits from the left 
+
+# CHECK VALID PDG ID
+fifth_byte = next(itertools.islice(row_bytes_itr, 4, None)) # take the fifth element of the iterator
+bin_id = (fifth_byte >> 5) & 0b111
