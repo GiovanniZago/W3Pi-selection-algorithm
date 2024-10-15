@@ -107,13 +107,54 @@ def puppi_unpacker_native64(file_name):
                 ev_size = (row_data["vld_header"] << 6) |  (row_data["err_bit"] << 5) | row_data["lr_num"]
 
                 if row_data["n_cand"] > 0: 
-                    is_header = False
-
                     if ev_size:
                         p_count = ev_size
                     else:
                         p_count = row_data["n_cand"]
                     
+                    is_header = False
+
+            else:
+                row_data = unpack_particle(row_bytes)
+                part_data.append((start_idx, row_data["pdg_id"], row_data["phi"], row_data["eta"], row_data["pt"]))
+                p_counter += 1
+                if p_counter == p_count:
+                    is_header = True
+                    p_counter = 0
+
+    return (header_data, part_data)
+
+def puppi_unpacker_mod_native64(file_name):
+    ii        = 0
+    start_idx = 0
+    is_header = True
+    p_count   = 0
+    p_counter = 0
+    
+    header_data = []
+    part_data   = []
+
+    with open(file_name, "rb") as puppi_dump:
+        while True:
+            row_bytes = puppi_dump.read(8) # read 8 bytes = 64 bits
+            ii += 1
+
+            if not row_bytes: 
+                break
+
+            if is_header:
+                row_data = unpack_header(row_bytes)
+                start_idx = ii
+                header_data.append((start_idx, row_data["vld_header"], row_data["err_bit"], row_data["lr_num"], row_data["orbit_cnt"], row_data["bx_cnt"], row_data["n_cand"]))
+                ev_size = (row_data["vld_header"] << 6) |  (row_data["err_bit"] << 5) | row_data["lr_num"]
+
+                if row_data["n_cand"] > 0: 
+                    if ev_size:
+                        p_count = ev_size - 1 # the -1 is needed to take into account that here ev_size is 1 header + particles
+                    else:
+                        p_count = row_data["n_cand"]
+                    
+                    is_header = False
 
             else:
                 row_data = unpack_particle(row_bytes)

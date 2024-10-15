@@ -22,7 +22,7 @@ def puppi_to_aiecsv(puppi_file, csv_file_H, csv_file_L):
 
             
 def main():
-    puppi_to_aiecsv(DATA_PATH + "Puppi_fix104.dump", DATA_PATH + "aie_data/Puppi_fix104_H.csv", DATA_PATH + "aie_data/Puppi_fix104_L.csv")
+    puppi_to_aiecsv(DATA_PATH + "Puppi_fix104mod.dump", DATA_PATH + "aie_data/Puppi_fix104mod_H.csv", DATA_PATH + "aie_data/Puppi_fix104mod_L.csv")
 
 if __name__ == "__main__":
     main()
