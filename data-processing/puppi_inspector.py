@@ -19,9 +19,9 @@ def main():
     columns_head = ["start_idx", "vld_header", "err_bit", "lr_number", "orbit_cnt", "bx_cnt", "n_cand"]
     columns_part = ["start_idx", "pdg_id", "phi", "eta", "pt"]
 
-    print_table(header_data, columns_head, start=3500, end=3600)
+    print_table(header_data, columns_head, start=0, end=9)
     print("\n\n\n")
-    print_table(part_data, columns_part, start=0, end=10)
+    print_table(part_data, columns_part, start=0, end=9)
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,7 @@
 import sys
 import traceback
+import os
+import struct
 
 class PuppiData:
     line_size = 8
@@ -8,7 +10,11 @@ class PuppiData:
     part_columns = ["idx", "pdg_id", "phi", "eta", "pt"]
 
     def __init__(self, file_name):
+        self.file_name = file_name
         self.file_path = self.data_path + file_name
+        file_stats = os.stat(self.file_path)
+        self.file_size = file_stats.st_size # file size in Bytes
+        self.file_rows = self.file_size / self.line_size # each row has line_size Bytes
         self.file = None
 
     def __enter__(self):
@@ -57,12 +63,19 @@ class PuppiData:
         for idx, line_str in zip(list(range(idx_start, idx_end)), lines_str):
             header = self._unpack_header(line_str)
 
-            if ((header["vld_header"] == 0) and (header["err_bit"] == 0) and (header["lr_num"] == 0)
-                    and (header["bx_cnt"] <= 3563) and (header["n_cand"] >= 0)):
+
+            if (int.from_bytes(line_str) == 0): 
+                is_null = True
+            else:
+                is_null = False
+            
+            if ((not is_null) and (header["vld_header"] == 0) and (header["err_bit"] == 0) and (header["lr_num"] == 0)
+                    and (header["orbit_cnt"] < 100_000) and (header["bx_cnt"] <= 3563) and (header["n_cand"] >= 0)):
                 headers_data.append((idx, header["vld_header"], header["err_bit"], header["lr_num"], 
                                      header["orbit_cnt"], header["bx_cnt"], header["n_cand"]))
             else:
                 particle = self._unpack_particle(line_str)
+                if is_null: particle["pdg_id"] = 0
                 particles_data.append((idx, particle["pdg_id"], particle["phi"], particle["eta"], particle["pt"]))
                 
                 
@@ -75,6 +88,69 @@ class PuppiData:
         self._print_table(headers_data, self.head_columns)
         print("\n\n")
         self._print_table(particles_data, self.part_columns)
+    
+
+    def pad_file(self, ev_size, out_file_name):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        ii          = 0
+        is_header   = True
+        p_count     = 0
+        p_counter   = 0
+        p_to_append = 0
+
+        with open(self.data_path + out_file_name, "wb") as out_file:
+            while True:
+                row_bytes = self._get_line(ii)
+                out_file.write(row_bytes)
+
+                if not row_bytes: 
+                    break
+
+                if is_header:
+                    row_data = self._unpack_header(row_bytes)
+                    p_count = row_data["n_cand"]
+                    p_to_append = ev_size - p_count - 1
+                                                        
+                    if p_to_append < 0:
+                        print(f"Header at row index {ii} has more particles than ev_size ({ev_size})")
+                        p_count = ev_size
+                        p_to_append = 0
+
+                    is_header = False
+
+                else:
+                    p_counter += 1
+                    if p_counter == p_count:
+                        for _ in range(p_to_append):
+                            out_file.write(b"\x00" * self.line_size)
+                        is_header = True
+                        p_counter = 0
+
+                ii += 1
+
+    def to_aiecsv(self):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name_H = str.split(self.file_name, ".")[0] + "_H.csv"
+        file_out_name_L = str.split(self.file_name, ".")[0] + "_L.csv"
+        
+        with open(self.data_path + "/aie_data/" + file_out_name_H, "w") as puppi_csv_H:
+            with open(self.data_path + "/aie_data/" + file_out_name_L, "w") as puppi_csv_L:
+                puppi_csv_H.write("CMD,D,TLAST,TKEEP\n")
+                puppi_csv_L.write("CMD,D,TLAST,TKEEP\n")
+
+                while True:
+                    row_bytes = self.file.read(self.line_size)
+
+                    if not row_bytes:
+                        break
+
+                    row_data = struct.unpack("ii", row_bytes)
+                    puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
+                    puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
     
     def _print_table(self, data, column_names):
         columns = len(column_names)
@@ -171,5 +247,7 @@ class PuppiData:
         }
     
 if __name__ == "__main__":
-    with PuppiData("Puppi.dump") as myPuppi:
-        myPuppi.print_lines_data(0, 2)
+    file = "Puppi_fix208mod.dump"
+    # file = "Puppi.dump"
+    with PuppiData(file) as myPuppi:
+        myPuppi.to_aiecsv()
