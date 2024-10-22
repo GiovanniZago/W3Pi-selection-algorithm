@@ -14,7 +14,7 @@ class PuppiData:
         self.file_path = self.data_path + file_name
         file_stats = os.stat(self.file_path)
         self.file_size = file_stats.st_size # file size in Bytes
-        self.file_rows = self.file_size / self.line_size # each row has line_size Bytes
+        self.file_rows = int(self.file_size / self.line_size) # each row has line_size Bytes
         self.file = None
 
     def __enter__(self):
@@ -50,7 +50,7 @@ class PuppiData:
 
         return lines_str
 
-    def get_lines_data(self, idx_start, idx_end=None):
+    def get_lines_data(self, idx_start, idx_end=None, single_block=False):
         if not idx_end:
             lines_str = [self._get_line(idx_start)]
             idx_end = idx_start + 1
@@ -78,16 +78,25 @@ class PuppiData:
                 if is_null: particle["pdg_id"] = 0
                 particles_data.append((idx, particle["pdg_id"], particle["phi"], particle["eta"], particle["pt"]))
                 
-                
-        return (headers_data, particles_data)
+        if single_block:
+            headers_data = [(header[0], 0, 0, 0, header[6]) for header in headers_data] # keep only index and n_cand
+            data = headers_data + particles_data
+            data.sort(key=lambda x: x[0])       
+            return data
+        else:
+            return (headers_data, particles_data)
 
         
-    def print_lines_data(self, idx_start, idx_end=None):
-        headers_data, particles_data = self.get_lines_data(idx_start, idx_end)
+    def print_lines_data(self, idx_start, idx_end=None, single_block=False):
+        if not single_block:
+            headers_data, particles_data = self.get_lines_data(idx_start, idx_end)
 
-        self._print_table(headers_data, self.head_columns)
-        print("\n\n")
-        self._print_table(particles_data, self.part_columns)
+            self._print_table(headers_data, self.head_columns)
+            print("\n\n")
+            self._print_table(particles_data, self.part_columns)
+        else:
+            data = self.get_lines_data(idx_start, idx_end, single_block)
+            self._print_table(data, self.part_columns)
     
 
     def pad_file(self, ev_size, out_file_name):
@@ -247,7 +256,7 @@ class PuppiData:
         }
     
 if __name__ == "__main__":
-    file = "Puppi_fix208mod.dump"
+    file = "Puppi_fix104mod.dump"
     # file = "Puppi.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.to_aiecsv()
+        myPuppi.print_lines_data(104, 207, single_block=True)
