@@ -2,6 +2,8 @@ import sys
 import traceback
 import os
 import struct
+import h5py
+import numpy as np
 
 class PuppiData:
     line_size = 8
@@ -79,7 +81,7 @@ class PuppiData:
                 particles_data.append((idx, particle["pdg_id"], particle["phi"], particle["eta"], particle["pt"]))
                 
         if single_block:
-            headers_data = [(header[0], 0, 0, 0, header[6]) for header in headers_data] # keep only index and n_cand
+            headers_data = [(header[0], 0, 0, 0, 0) for header in headers_data] # keep only index and n_cand if you want
             data = headers_data + particles_data
             data.sort(key=lambda x: x[0])       
             return data
@@ -113,8 +115,10 @@ class PuppiData:
             while True:
                 row_bytes = self._get_line(ii)
                 out_file.write(row_bytes)
+                ii += 1
 
                 if not row_bytes: 
+                    print(f"While loop ended at line {ii}")
                     break
 
                 if is_header:
@@ -122,6 +126,12 @@ class PuppiData:
                     p_count = row_data["n_cand"]
                     p_to_append = ev_size - p_count - 1
                                                         
+                    if p_count == 0:
+                        for _ in range(p_to_append):
+                            out_file.write(b"\x00" * self.line_size)
+
+                        continue
+
                     if p_to_append < 0:
                         print(f"Header at row index {ii} has more particles than ev_size ({ev_size})")
                         p_count = ev_size
@@ -131,13 +141,13 @@ class PuppiData:
 
                 else:
                     p_counter += 1
+
                     if p_counter == p_count:
                         for _ in range(p_to_append):
                             out_file.write(b"\x00" * self.line_size)
                         is_header = True
                         p_counter = 0
 
-                ii += 1
 
     def to_aiecsv(self):
         if not self.file:
@@ -160,6 +170,33 @@ class PuppiData:
                     row_data = struct.unpack("ii", row_bytes)
                     puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
                     puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
+
+    def to_hdf5(self, ev_size):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name = str.split(self.file_name, ".")[0] + ".hdf5"
+        
+        foo = self.file_rows % ev_size
+
+        if foo != 0:
+            raise ValueError("The number of rows in the file is not a multiple of ev_size.")
+
+        n_events = int(self.file_rows / ev_size)
+        
+        idxs_start = [x * ev_size for x in range(n_events)]
+        idxs_end = [x * ev_size for x in range(1, n_events+1)]
+        
+        with h5py.File(self.data_path + file_out_name, "w") as f:
+            f.attrs["columns"] = self.part_columns # save the columns name as metadata  
+            f.attrs["ev_size"] = ev_size
+            
+            for idx_event, (idx_start, idx_end) in enumerate(zip(idxs_start, idxs_end)):
+                data = self.get_lines_data(idx_start, idx_end, single_block=True)
+                data = np.array(data)
+                d_name = str(idx_event)
+                d = f.create_dataset(d_name, data=data[:,1:]) # save all the rows but skip the first column since it's the index
+                d.attrs["index"] = data[:,0] # save the index column as metadata     
     
     def _print_table(self, data, column_names):
         columns = len(column_names)
@@ -256,7 +293,7 @@ class PuppiData:
         }
     
 if __name__ == "__main__":
-    file = "Puppi_fix104mod.dump"
     # file = "Puppi.dump"
+    file = "Puppi_fix104mod1.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(104, 207, single_block=True)
+        myPuppi.print_lines_data(312, 416, single_block=True)
