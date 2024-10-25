@@ -85,6 +85,7 @@ def main():
             phis = event[:,c["phi"]]
             etas = event[:,c["eta"]]
             pts = event[:,c["pt"]]
+            zeros_vector = np.zeros(ev_size, dtype="int32")
 
             # PRELIMINARY DATA FILTERING
             # find masks for minpt cut and pdg_id selection
@@ -92,14 +93,33 @@ def main():
             pdg_id_mask2 = np.abs(pdg_ids) == 11
             pdg_id_mask = pdg_id_mask1 | pdg_id_mask2
 
-            # find mask for isolation
+            # CALCULATE ISOLATION
             iso_mask = np.zeros(ev_size, dtype="int") 
 
-            for idx, _ in enumerate(event):
-                iso_mask[idx] = isolation(idx, ev_size, etas, phis, pts)
+            for ii in range(ev_size):
+                eta_cur = etas[ii]
+                phi_cur = phis[ii]
+                pt_cur = pts[ii]
+                pt_sum = 0
+
+                d_eta = eta_cur - etas
+            
+                d_phi = np.zeros(ev_size)
+                for jj in range(ev_size):
+                    d_phi[jj] = ang_diff(phi_cur, phis[jj])
+
+                dr2 = d_eta ** 2 + d_phi ** 2
+                dr2 *= F_CONV2
+
+                pts_mask = (dr2 >= MIN_DR2) & (dr2 <= MAX_DR2)
+                pts_to_sum = np.where(pts_mask, pts, zeros_vector)
+                pt_sum = np.sum(pts_to_sum)
+
+                if pt_sum <= (MAX_ISO * pt_cur):
+                    iso_mask[ii] = 1
+
 
             # combine masks and filter data based on **individual** characteristic
-            zeros_vector = np.zeros(ev_size, dtype="int32")
             filter_mask = pdg_id_mask & iso_mask
 
             pdg_ids = np.where(filter_mask, pdg_ids, zeros_vector)
@@ -144,7 +164,11 @@ def main():
                 phi_cur = phis_min_pt[ii]
                 idx_cur = index_vector[ii]
 
-                # angular separation between med and min
+                # the following is needed to verify that te angular separation happens between a 
+                # particle that has passed the min_pt cut and another one
+                idx_to_append = 0 if min_pt_mask[idx_cur] == 0 else idx_cur+1
+
+                # (1) angular separation between med and min
                 d_eta = eta_cur - etas_med_pt # scalar - vector
 
                 d_phi = np.zeros(ev_size)
@@ -155,14 +179,10 @@ def main():
                 dr2 = dr2 * F_CONV2
                 is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
 
-                # the following is needed to verify that te angular separation happens between a 
-                # particle that has passed the min_pt cut and another one
-                idx_to_append = 0 if min_pt_mask[idx_cur] == 0 else idx_cur+1
-
                 # update vector with indexes
                 angsep_idx_med_min = np.where(is_ge_mindr2, idx_to_append, angsep_idx_med_min)
 
-                # angular separation between high and min
+                # (2) angular separation between high and min
                 d_eta = eta_cur - etas_hig_pt # scalar - vector
 
                 d_phi = np.zeros(ev_size)
@@ -185,7 +205,7 @@ def main():
             # particle that has passed the high_pt cut and another one
             angsep_idx_hig_min = np.where(hig_pt_mask, angsep_idx_hig_min, zeros_vector)
 
-            # angular separation between high and med
+            # (3) angular separation between high and med
             angsep_idx_hig_med = np.zeros(ev_size, dtype="int32")
 
             for ii in range(ev_size):

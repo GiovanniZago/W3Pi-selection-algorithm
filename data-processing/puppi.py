@@ -171,6 +171,25 @@ class PuppiData:
                     puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
                     puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
 
+    def lines_to_aiecsv(self, idx_start, idx_end):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name_H = str.split(self.file_name, ".")[0] + "_lines_H.csv"
+        file_out_name_L = str.split(self.file_name, ".")[0] + "_lines_L.csv"
+
+        with open(self.data_path + "/aie_data/" + file_out_name_H, "w") as puppi_csv_H:
+            with open(self.data_path + "/aie_data/" + file_out_name_L, "w") as puppi_csv_L:
+                puppi_csv_H.write("CMD,D,TLAST,TKEEP\n")
+                puppi_csv_L.write("CMD,D,TLAST,TKEEP\n")
+
+                lines = self._get_lines(idx_start, idx_end)
+                for line in lines:
+                    row_data = struct.unpack("ii", line)
+                    puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
+                    puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
+
+
     def to_hdf5(self, ev_size):
         if not self.file:
             raise ValueError("File not opened. Call self.open_file() first or enter the context.")
@@ -296,4 +315,4 @@ if __name__ == "__main__":
     # file = "Puppi.dump"
     file = "Puppi_fix104mod1.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(312, 416, single_block=True)
+        myPuppi.print_lines_data(162552, 162760, single_block=True)
