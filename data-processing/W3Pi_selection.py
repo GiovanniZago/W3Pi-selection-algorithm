@@ -16,6 +16,8 @@ PI             = 720
 MAX_MASS       = 150 # 100
 MAX_DR2        = 0.25 * 0.25
 MAX_ISO        = 0.5 # 2.0 or 0.4
+PT_CONV        = 0.25
+F_CONV         = np.pi / PI
 F_CONV2        = (np.pi / PI ) ** 2
 
 P_BUNCHES = 13
@@ -68,7 +70,7 @@ def main():
     with h5py.File(DATA_PATH + file, "r") as f:
         keys = [int(k) for k in f.keys()]
         keys.sort()
-        keys_subset = [keys[1563]]
+        keys_subset = [keys[1498]]
 
         for k in keys_subset:
             if DEBUG:
@@ -94,7 +96,7 @@ def main():
             pdg_id_mask = pdg_id_mask1 | pdg_id_mask2
 
             # CALCULATE ISOLATION
-            iso_mask = np.zeros(ev_size, dtype="int") 
+            iso_mask = np.zeros(ev_size, dtype="int32") 
 
             for ii in range(ev_size):
                 eta_cur = etas[ii]
@@ -155,65 +157,30 @@ def main():
                 print("\n\n")
 
             # CALCULATE ANGULAR SEPARATION
-            index_vector = np.arange(ev_size)
-            angsep_idx_med_min = np.zeros(ev_size, dtype="int32")
-            angsep_idx_hig_min = np.zeros(ev_size, dtype="int32")
-
-            for ii in range(ev_size):
-                eta_cur = etas_min_pt[ii]
-                phi_cur = phis_min_pt[ii]
-                idx_cur = index_vector[ii]
-
-                # the following is needed to verify that te angular separation happens between a 
-                # particle that has passed the min_pt cut and another one
-                idx_to_append = 0 if min_pt_mask[idx_cur] == 0 else idx_cur+1
-
-                # (1) angular separation between med and min
-                d_eta = eta_cur - etas_med_pt # scalar - vector
-
-                d_phi = np.zeros(ev_size)
-                for jj in range(ev_size):
-                    d_phi[jj] = ang_diff(phi_cur, phis_med_pt[jj])
-
-                dr2 = d_eta ** 2 + d_phi ** 2
-                dr2 = dr2 * F_CONV2
-                is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
-
-                # update vector with indexes
-                angsep_idx_med_min = np.where(is_ge_mindr2, idx_to_append, angsep_idx_med_min)
-
-                # (2) angular separation between high and min
-                d_eta = eta_cur - etas_hig_pt # scalar - vector
-
-                d_phi = np.zeros(ev_size)
-                for jj in range(ev_size):
-                    d_phi[jj] = ang_diff(phi_cur, phis_hig_pt[jj])
-
-                dr2 = d_eta ** 2 + d_phi ** 2
-                dr2 = dr2 * F_CONV2
-                is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
-                
-                # update vector with indexes
-                angsep_idx_hig_min = np.where(is_ge_mindr2, idx_to_append, angsep_idx_hig_min)
-            
-
-            # the following is needed to verify that te angular separation happens between a 
-            # particle that has passed the med_pt cut and another one
-            angsep_idx_med_min = np.where(med_pt_mask, angsep_idx_med_min, zeros_vector)
-
-            # the following is needed to verify that te angular separation happens between a 
-            # particle that has passed the high_pt cut and another one
-            angsep_idx_hig_min = np.where(hig_pt_mask, angsep_idx_hig_min, zeros_vector)
-
-            # (3) angular separation between high and med
+            # variables to place indexes
+            index_vector = np.arange(ev_size, dtype="int32")
             angsep_idx_hig_med = np.zeros(ev_size, dtype="int32")
+            angsep_idx_hig_target_min = np.zeros(ev_size, dtype="int32")
+            angsep_idx_med_target_min = np.zeros(ev_size, dtype="int32")
+            hig_target_idx = None
+            med_target_idx = None
+            min_target_idx = None
 
+            # define the triplet and related relativistic variables
+            triplet = [-1, -1, -1]
+            charge = None
+            invariant_mass = None
+
+            # (1) angular separation between high and med
             for ii in range(ev_size):
                 eta_cur = etas_med_pt[ii]
                 phi_cur = phis_med_pt[ii]
                 idx_cur = index_vector[ii]
 
-                # angular separation between med and min
+                # the following is needed to verify that te angular separation happens between a 
+                # particle that has passed the med pt cut and another one
+                idx_to_append = 0 if med_pt_mask[idx_cur] == 0 else idx_cur+1
+
                 d_eta = eta_cur - etas_hig_pt # scalar - vector
 
                 d_phi = np.zeros(ev_size)
@@ -224,51 +191,120 @@ def main():
                 dr2 = dr2 * F_CONV2
                 is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
 
-                # the following is needed to verify that te angular separation happens between a 
-                # particle that has passed the med_pt cut and another one
-                idx_to_append = 0 if med_pt_mask[idx_cur] == 0 else idx_cur+1
-
+                # update vector with indexes
                 angsep_idx_hig_med = np.where(is_ge_mindr2, idx_to_append, angsep_idx_hig_med)
-            
+
             # the following is needed to verify that te angular separation happens between a 
-            # particle that has passed the high_pt cut and another one
+            # particle that has passed the high pt cut and another one
             angsep_idx_hig_med = np.where(hig_pt_mask, angsep_idx_hig_med, zeros_vector)
+
+            # find the high pt target index
+            foo = np.nonzero(angsep_idx_hig_med)[0]
+        
+            if (len(foo) > 0):
+                # (2) angular separation between high pt target and min
+                hig_target_idx = foo[0].astype("int32")
+                eta_hig_pt_target = etas_hig_pt[hig_target_idx] * np.ones(ev_size, dtype="int32")
+                phi_hig_pt_target = phis_hig_pt[hig_target_idx] * np.ones(ev_size, dtype="int32")
+
+                d_eta = eta_hig_pt_target - etas_min_pt # scalar - vector
+
+                d_phi = np.zeros(ev_size)
+                for jj in range(ev_size):
+                    d_phi[jj] = ang_diff(phi_hig_pt_target[jj], phis_min_pt[jj])
+
+                dr2 = d_eta ** 2 + d_phi ** 2
+                dr2 = dr2 * F_CONV2
+                is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
+
+                # select the indexes of min_pt partices that are ang sep from the high pt particle
+                # identified by idx_target1
+                angsep_idx_hig_target_min = np.where(is_ge_mindr2, index_vector+1, angsep_idx_hig_target_min)
+                
+                # make sure that the min pt particles corresponging to the min pt indexes have passed
+                # the min pt cut
+                angsep_idx_hig_target_min = np.where(min_pt_mask, angsep_idx_hig_target_min, zeros_vector)
+
+                # (3) angular separation between med pt target and min 
+                med_target_idx = angsep_idx_hig_med[hig_target_idx] - 1 # minus 1 because we appended idx_cur+1
+                
+                eta_med_pt_target = etas_med_pt[med_target_idx] * np.ones(ev_size)
+                phi_med_pt_target = phis_med_pt[med_target_idx] * np.ones(ev_size)
+
+                d_eta = eta_med_pt_target - etas_min_pt # scalar - vector
+
+                d_phi = np.zeros(ev_size)
+                for jj in range(ev_size):
+                    d_phi[jj] = ang_diff(phi_med_pt_target[jj], phis_min_pt[jj])
+
+                dr2 = d_eta ** 2 + d_phi ** 2
+                dr2 = dr2 * F_CONV2
+                is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
+
+                # select the indexes of min_pt partices that are ang sep from the high pt particle
+                # identified by idx_target1
+                angsep_idx_med_target_min = np.where(is_ge_mindr2, index_vector+1, angsep_idx_med_target_min)
+                
+                # make sure that the min pt particles corresponging to the min pt indexes have passed
+                # the min pt cut
+                angsep_idx_med_target_min = np.where(min_pt_mask, angsep_idx_med_target_min, zeros_vector)
+
+                # find a common element between the two arrays
+                # the mask on > 0 elements is necessary to avoid the zero placeholders 
+                # in case of no angular separation
+                goo = np.intersect1d(angsep_idx_hig_target_min[angsep_idx_hig_target_min > 0], 
+                                     angsep_idx_med_target_min[angsep_idx_med_target_min > 0])
+
+                if len(goo) > 0:
+                    min_target_idx = goo[0]
+                    min_target_idx -= 1 # because we have inserted index_vector + 1 both in angsep_idx_hig_target_min and angsep_idx_med_target_min
+                    triplet = [min_target_idx, med_target_idx, hig_target_idx]
+                    charge = np.sign(pdg_ids[min_target_idx]) + np.sign(pdg_ids[med_target_idx]) + np.sign(pdg_ids[hig_target_idx])
+
+                    if charge == 1:
+                        mass1 = 0.13957039 if (np.abs(pdg_ids[min_target_idx]) > 0) else 0.1349768
+                        px1 = pts[min_target_idx] * PT_CONV * np.cos(phis[min_target_idx] * F_CONV)
+                        py1 = pts[min_target_idx] * PT_CONV * np.sin(phis[min_target_idx] * F_CONV)
+                        pz1 = pts[min_target_idx] * PT_CONV * np.sinh(etas[min_target_idx] * F_CONV)
+                        e1 = np.sqrt((pts[min_target_idx] * PT_CONV * np.cosh(etas[min_target_idx] * F_CONV)) ** 2 + mass1 ** 2)
+
+                        mass2 = 0.13957039 if (np.abs(pdg_ids[min_target_idx]) > 0) else 0.1349768
+                        px2 = pts[med_target_idx] * PT_CONV * np.cos(phis[med_target_idx] * F_CONV)
+                        py2 = pts[med_target_idx] * PT_CONV * np.sin(phis[med_target_idx] * F_CONV)
+                        pz2 = pts[med_target_idx] * PT_CONV * np.sinh(etas[med_target_idx] * F_CONV)
+                        e2 = np.sqrt((pts[med_target_idx] * PT_CONV * np.cosh(etas[med_target_idx] * F_CONV)) ** 2 + mass2 ** 2)
+
+                        mass3 = 0.13957039 if (np.abs(pdg_ids[min_target_idx]) > 0) else 0.1349768
+                        px3 = pts[hig_target_idx] * PT_CONV * np.cos(phis[hig_target_idx] * F_CONV)
+                        py3 = pts[hig_target_idx] * PT_CONV * np.sin(phis[hig_target_idx] * F_CONV)
+                        pz3 = pts[hig_target_idx] * PT_CONV * np.sinh(etas[hig_target_idx] * F_CONV)
+                        e3 = np.sqrt((pts[hig_target_idx] * PT_CONV * np.cosh(etas[hig_target_idx] * F_CONV)) ** 2 + mass3 ** 2)
+
+                        px_tot = px1 + px2 + px3
+                        py_tot = py1 + py2 + py3
+                        pz_tot = pz1 + pz2 + pz3
+                        e_tot = e1 + e2 + e3
+
+                        e_tot2 = e_tot ** 2
+                        p_tot2 = px_tot ** 2 + py_tot ** 2 + pz_tot ** 2
+
+                        if e_tot2 > p_tot2:
+                            invariant_mass = np.sqrt(e_tot2 - p_tot2)
 
             if DEBUG:
                 print("ANGULAR SEPARATION:")
-                df_angsep = pd.DataFrame(data=np.vstack((angsep_idx_med_min, angsep_idx_hig_min, angsep_idx_hig_med)).T, 
-                                         columns=["MED/MIN", "HIGH/MIN", "HIGH/MED"], 
+                df_angsep = pd.DataFrame(data=np.vstack((angsep_idx_hig_med, angsep_idx_hig_target_min, angsep_idx_med_target_min)).T, 
+                                         columns=["HIG/MED", f"HIG_TARGET({hig_target_idx})/MIN", f"MED_TARGET({med_target_idx})/MIN"], 
                                          dtype="int32")
                 print(df_angsep)
                 print("\n\n")
 
-            # test1 = np.any(angsep_idx_med_min != 0)
-            # test2 = np.any(angsep_idx_hig_min != 0)
-            # test3 = np.any(angsep_idx_hig_med != 0)
+            print(f"Triplet at Event #{k}:   {triplet}      Tot charge = {charge}")
 
-            # if (test1 and test2 and test3):
-            #     print(f"Event #{k} tests successful")
+            if invariant_mass:
+                print(f"Invariant mass = {invariant_mass} GeV")
 
-            triplet = []
-            for ii in range(ev_size):
-                idx_cur = index_vector[ii]
 
-                is_idx_eq1 = angsep_idx_hig_min == (idx_cur+1)
-                idx_target1 = np.nonzero(is_idx_eq1)[0]
-
-                if len(idx_target1) == 0:
-                    continue
-                
-                idx_target1 = idx_target1[0]
-                idx_target2 = angsep_idx_hig_med[idx_target1]
-                idx_target2 -= 1
-
-                if angsep_idx_med_min[idx_target2] == idx_cur:
-                    triplet = np.array([idx_cur, idx_target2, idx_target1])
-                    break
-
-            if len(triplet) > 0:
-                print(f"Triplet at Event #{k}:   {triplet}")
             
 
 if __name__ == "__main__":
