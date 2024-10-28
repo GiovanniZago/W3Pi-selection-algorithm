@@ -260,8 +260,9 @@ def main():
                     min_target_idx -= 1 # because we have inserted index_vector + 1 both in angsep_idx_hig_target_min and angsep_idx_med_target_min
                     triplet = [min_target_idx, med_target_idx, hig_target_idx]
                     charge = np.sign(pdg_ids[min_target_idx]) + np.sign(pdg_ids[med_target_idx]) + np.sign(pdg_ids[hig_target_idx])
+                    abs_charge = np.abs(charge)
 
-                    if charge == 1:
+                    if abs_charge == 1:
                         mass1 = 0.13957039 if (np.abs(pdg_ids[min_target_idx]) > 0) else 0.1349768
                         px1 = pts[min_target_idx] * PT_CONV * np.cos(phis[min_target_idx] * F_CONV)
                         py1 = pts[min_target_idx] * PT_CONV * np.sin(phis[min_target_idx] * F_CONV)

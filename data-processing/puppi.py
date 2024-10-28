@@ -71,7 +71,7 @@ class PuppiData:
             else:
                 is_null = False
             
-            if ((not is_null) and (header["vld_header"] == 0) and (header["err_bit"] == 0) and (header["lr_num"] == 0)
+            if ((not is_null) and (header["err_bit"] == 0) and (header["lr_num"] == 0)
                     and (header["orbit_cnt"] < 100_000) and (header["bx_cnt"] <= 3563) and (header["n_cand"] >= 0)):
                 headers_data.append((idx, header["vld_header"], header["err_bit"], header["lr_num"], 
                                      header["orbit_cnt"], header["bx_cnt"], header["n_cand"]))
@@ -313,6 +313,6 @@ class PuppiData:
     
 if __name__ == "__main__":
     # file = "Puppi.dump"
-    file = "Puppi_fix104mod1.dump"
+    file = "PuppiSignal_fix104mod.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(162552, 162760, single_block=True)
+        myPuppi.to_hdf5(104)
