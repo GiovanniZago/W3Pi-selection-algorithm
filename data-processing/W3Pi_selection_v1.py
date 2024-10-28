@@ -2,6 +2,8 @@ import numpy as np
 import h5py
 import pandas as pd
 import warnings
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # warnings.simplefilter("error")
 
@@ -13,10 +15,10 @@ MIN_PT         = 7 # 9
 MED_PT         = 12 # 15
 HIG_PT         = 15 # 20
 MIN_DR2_ANGSEP = 0.5 * 0.5
-MIN_MASS       = 40 # 60
+MIN_MASS       = 60 # 60
 MIN_DR2        = 0.01 * 0.01
 PI             = 720
-MAX_MASS       = 150 # 100
+MAX_MASS       = 100 # 100
 MAX_DR2        = 0.25 * 0.25
 MAX_ISO        = 0.5 # 2.0 or 0.4
 PT_CONV        = 0.25
@@ -28,7 +30,8 @@ V_SIZE = 8
 
 DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
 
-DEBUG = False
+VERBOSE = True
+DEBUG_MASKS = False
 
 def ang_diff(x, y):
     if (np.abs(x) > PI or np.abs(y) > PI):
@@ -43,18 +46,20 @@ def ang_diff(x, y):
     return diff 
 
 def main():
-    # file = "PuppiSignal_fix104mod.hdf5"
-    file = "Puppi_fix104mod1.hdf5"
+    file = "PuppiSignal_104.hdf5"
+    # file = "Puppi_104.hdf5"
 
     with h5py.File(DATA_PATH + file, "r") as f:
         keys = [int(k) for k in f.keys()]
         keys.sort()
-        keys_subset = [keys[0]]
+        keys_subset = keys[0:20_000]
 
-        for k in keys_subset:
-            if DEBUG:
+        invariant_masses = []
+        n_filtered_triplets = []
+
+        for k in tqdm(keys_subset):
+            if VERBOSE or DEBUG_MASKS:
                 print(f"EVENT #{k}")
-                print("\n")
 
             idx_dataset = str(k)
             event = f[idx_dataset][()]
@@ -131,7 +136,7 @@ def main():
             etas_hig_pt = np.where(hig_pt_mask, etas, zeros_vector).astype("int32")
             phis_hig_pt = np.where(hig_pt_mask, phis, zeros_vector).astype("int32")
 
-            if DEBUG:
+            if DEBUG_MASKS:
                 print("DATA AND MASKS")
                 df_angsep = pd.DataFrame(data=np.vstack((pdg_ids, phis, etas, pts, pdg_id_mask, iso_mask, filter_mask, min_pt_mask, med_pt_mask, hig_pt_mask)).T, 
                                          columns=["DATA:PDG_ID", "DATA:PHIS", "DATA:ETAS", "DATA:PTS", "PDG_ID_MASK", "ISO_MASK", "PDG_ID & ISO MASK", "MIN_PT_MASK", "MED_PT_MASK", "HIGH_PT_MASK"], 
@@ -149,6 +154,7 @@ def main():
             triplets = []
             charge = None
             invariant_mass = None
+            n_filtered = 0
 
             # check all the possible combinations between high pt and med pt
             n_hig_pt = np.sum(hig_pt_mask)
@@ -229,6 +235,8 @@ def main():
                             abs_charge = np.abs(charge)
 
                             if abs_charge == 1:
+                                n_filtered += 1
+
                                 mass1 = 0.13957039 if (np.abs(pdg_ids[min_target_idx]) > 0) else 0.1349768
                                 px1 = pts[min_target_idx] * PT_CONV * np.cos(phis[min_target_idx] * F_CONV)
                                 py1 = pts[min_target_idx] * PT_CONV * np.sin(phis[min_target_idx] * F_CONV)
@@ -256,12 +264,21 @@ def main():
                                 p_tot2 = px_tot ** 2 + py_tot ** 2 + pz_tot ** 2
 
                                 invariant_mass = np.sqrt(e_tot2 - p_tot2)
+                                invariant_masses.append(invariant_mass)
 
-                                triplets.append(([min_target_idx, med_target_idx, hig_target_idx], invariant_mass))
-
+                                # triplets.append(([min_target_idx, med_target_idx, hig_target_idx], invariant_mass))
+                
+            n_filtered_triplets.append(n_filtered
+                                       )
+            if VERBOSE:
+                print(f"# filtered triplets = {n_filtered}")
+                print(f"# min_pt = {np.sum(min_pt_mask)}")
+                print(f"# med_pt = {np.sum(med_pt_mask)}")
+                print(f"# hig_pt = {np.sum(hig_pt_mask)}")
+                print("\n")
         
-            for triplet in triplets:
-                print(f"Indexes: {triplet[0]}       Mass = {triplet[1]}")
+        plt.hist(invariant_masses, bins=20)
+        plt.show()
 
 
                 

@@ -174,3 +174,4 @@ pyrightconfig.json
 
 # my stuff
 *.hdf5
+imgs/

@@ -313,6 +313,7 @@ class PuppiData:
     
 if __name__ == "__main__":
     # file = "Puppi.dump"
-    file = "PuppiSignal_fix104mod.dump"
+    file = "Puppi_104.dump"
+    # file = "PuppiSignal_104.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.to_hdf5(104)
+        myPuppi.print_lines_data(0, 100)
