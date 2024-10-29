@@ -4,10 +4,29 @@ import uproot
 import awkward as ak
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
+
+MIN_PT  = 7 # 9
+MED_PT  = 12 # 15
+HIG_PT  = 15 # 20
+PT_CONV = 0.25
 
 pd.options.display.max_rows = 200
 pd.options.display.max_columns = 200
 pd.options.display.width = 1000
+
+def get_pt_group(pt):
+    if pt >= HIG_PT * PT_CONV:
+        return "HIG"
+    
+    elif pt >= MED_PT * PT_CONV:
+        return "MED"
+    
+    elif pt >= MIN_PT * PT_CONV:
+        return "MIN"
+    
+    else:
+        return "NULL"
 
 with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f:
     tree = f.get("Events")
@@ -17,28 +36,22 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f:
     # [pdg_id_event0_array, pdg_id_event1_array, ...]
     # So basically each key in branches is an array of arrays
     branches = tree.arrays()
-    
-    # select specific event
-    n_events = 50_000
-    # event_idx = 6
-    # event = branches[event_idx]
-    
-    # GenW_mass = event["GenW_mass"]
-    # nPuppi = event["nPuppi"]
+    n_events = 50_000 # look at the keys of the correspondent hdf5 file
 
-    # columns = ["Puppi_pdgId", "Puppi_phi", "Puppi_eta", "Puppi_pt", "Puppi_GenPiIdx"]
-    # df_data = {col: event[col] for col in columns}
-    # df = pd.DataFrame(df_data)
-    # df["Puppi_phi_FP"] = df["Puppi_phi"].apply(lambda x: int(x * (720 / np.pi)))
-    # df["Puppi_eta_FP"] = df["Puppi_eta"].apply(lambda x: int(x * (720 / np.pi)))
-    # df["Puppi_pt_FP"] = df["Puppi_pt"].apply(lambda x: int(x / 0.25))
-    # print(df)
-
-    for idx in range(n_events):
-        nPuppi = branches["nPuppi"][idx]
-        gen_idx = branches["Puppi_GenPiIdx"][idx]
-        pts = branches["Puppi_pt"][idx]
+    for ev_idx in tqdm(range(n_events)):
+        nPuppi = branches["nPuppi"][ev_idx]
+        gen_idx = branches["Puppi_GenPiIdx"][ev_idx]
+        pts = branches["Puppi_pt"][ev_idx]
 
         zeros_vector = ak.Array([0] * nPuppi)
+        idx0 = ak.where(gen_idx == 0)
+        idx1 = ak.where(gen_idx == 1)
+        idx2 = ak.where(gen_idx == 2)
 
+        if (ak.count(idx0) > 0) and (ak.count(idx1) > 0)  and (ak.count(idx2) > 0) :
+            pt_group0 = get_pt_group(pts[idx0])
+            pt_group1 = get_pt_group(pts[idx1])
+            pt_group2 = get_pt_group(pts[idx2])
+
+            print(f"Event #{ev_idx}   ({ak.to_numpy(idx0).flatten()}, {ak.to_numpy(idx1).flatten()}, {ak.to_numpy(idx2).flatten()})     ({pt_group0}, {pt_group1}, {pt_group2})")
 
