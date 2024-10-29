@@ -31,7 +31,7 @@ V_SIZE = 8
 DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
 
 VERBOSE = True
-DEBUG_MASKS = False
+DEBUG_MASKS = True
 
 def ang_diff(x, y):
     if (np.abs(x) > PI or np.abs(y) > PI):
@@ -52,7 +52,7 @@ def main():
     with h5py.File(DATA_PATH + file, "r") as f:
         keys = [int(k) for k in f.keys()]
         keys.sort()
-        keys_subset = keys[0:20_000]
+        keys_subset = [keys[6]]
 
         invariant_masses = []
         n_filtered_triplets = []
@@ -266,10 +266,9 @@ def main():
                                 invariant_mass = np.sqrt(e_tot2 - p_tot2)
                                 invariant_masses.append(invariant_mass)
 
-                                # triplets.append(([min_target_idx, med_target_idx, hig_target_idx], invariant_mass))
+                                triplets.append(([min_target_idx, med_target_idx, hig_target_idx], invariant_mass))
                 
-            n_filtered_triplets.append(n_filtered
-                                       )
+            n_filtered_triplets.append(n_filtered)
             if VERBOSE:
                 print(f"# filtered triplets = {n_filtered}")
                 print(f"# min_pt = {np.sum(min_pt_mask)}")
@@ -277,7 +276,10 @@ def main():
                 print(f"# hig_pt = {np.sum(hig_pt_mask)}")
                 print("\n")
         
-        plt.hist(invariant_masses, bins=20)
+        plt.hist(invariant_masses, bins=25)
+        plt.title(file)
+        plt.xlabel("Invariant Mass")
+        plt.ylabel("Counts")
         plt.show()
 
 

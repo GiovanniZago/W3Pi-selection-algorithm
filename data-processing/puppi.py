@@ -124,7 +124,7 @@ class PuppiData:
                 if is_header:
                     row_data = self._unpack_header(row_bytes)
                     p_count = row_data["n_cand"]
-                    p_to_append = ev_size - p_count - 1
+                    p_to_append = ev_size - p_count
                                                         
                     if p_count == 0:
                         for _ in range(p_to_append):
@@ -196,15 +196,16 @@ class PuppiData:
         
         file_out_name = str.split(self.file_name, ".")[0] + ".hdf5"
         
-        foo = self.file_rows % ev_size
+        block_size = ev_size + 1 # + 1 is needed to take into account the header
+        foo = self.file_rows % block_size
 
         if foo != 0:
-            raise ValueError("The number of rows in the file is not a multiple of ev_size.")
+            raise ValueError("The number of rows in the file is not a multiple of block_size = ev_size + 1.")
 
-        n_events = int(self.file_rows / ev_size)
+        n_events = int(self.file_rows / block_size)
         
-        idxs_start = [x * ev_size for x in range(n_events)]
-        idxs_end = [x * ev_size for x in range(1, n_events+1)]
+        idxs_start = [x * block_size for x in range(n_events)]
+        idxs_end = [x * block_size for x in range(1, n_events+1)]
         
         with h5py.File(self.data_path + file_out_name, "w") as f:
             f.attrs["columns"] = self.part_columns # save the columns name as metadata  
@@ -214,8 +215,10 @@ class PuppiData:
                 data = self.get_lines_data(idx_start, idx_end, single_block=True)
                 data = np.array(data)
                 d_name = str(idx_event)
-                d = f.create_dataset(d_name, data=data[:,1:]) # save all the rows but skip the first column since it's the index
-                d.attrs["index"] = data[:,0] # save the index column as metadata     
+
+                # save all the rows but skip the first column since it's the index
+                # and also skip the first row since it is the header
+                f.create_dataset(d_name, data=data[1:,1:])     
     
     def _print_table(self, data, column_names):
         columns = len(column_names)
@@ -313,7 +316,8 @@ class PuppiData:
     
 if __name__ == "__main__":
     # file = "Puppi.dump"
-    file = "Puppi_104.dump"
-    # file = "PuppiSignal_104.dump"
+    # file = "Puppi_104.dump"
+    # file = "puppi_WTo3Pion_PU200.dump"
+    file = "PuppiSignal_104.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(0, 100)
+        pass
