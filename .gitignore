@@ -176,3 +176,5 @@ pyrightconfig.json
 *.hdf5
 imgs/
 *.root
+data/Puppi_208_nh.dump
+*.csv

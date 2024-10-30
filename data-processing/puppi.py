@@ -101,7 +101,7 @@ class PuppiData:
             self._print_table(data, self.part_columns)
     
 
-    def pad_file(self, ev_size, out_file_name):
+    def pad_file(self, ev_size, out_file_name, include_headers = False):
         if not self.file:
             raise ValueError("File not opened. Call self.open_file() first or enter the context.")
         
@@ -114,7 +114,13 @@ class PuppiData:
         with open(self.data_path + out_file_name, "wb") as out_file:
             while True:
                 row_bytes = self._get_line(ii)
-                out_file.write(row_bytes)
+                
+                if include_headers:
+                    out_file.write(row_bytes)
+
+                elif (not is_header):
+                    out_file.write(row_bytes)
+
                 ii += 1
 
                 if not row_bytes: 
@@ -170,6 +176,24 @@ class PuppiData:
                     row_data = struct.unpack("ii", row_bytes)
                     puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
                     puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
+
+    def to_aiecsv64(self):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name = str.split(self.file_name, ".")[0] + ".csv"
+        
+        with open(self.data_path + "/aie_data/" + file_out_name, "w") as puppi_csv:
+            puppi_csv.write("CMD,D,TLAST,TKEEP\n")
+
+            while True:
+                row_bytes = self.file.read(self.line_size)
+
+                if not row_bytes:
+                    break
+
+                row_data = struct.unpack("q", row_bytes)
+                puppi_csv.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
 
     def lines_to_aiecsv(self, idx_start, idx_end):
         if not self.file:
@@ -317,7 +341,9 @@ class PuppiData:
 if __name__ == "__main__":
     # file = "Puppi.dump"
     # file = "Puppi_104.dump"
+    # file = "Puppi_104_nh.dump"
+    file = "Puppi_208_nh.dump"
     # file = "puppi_WTo3Pion_PU200.dump"
-    file = "PuppiSignal_104.dump"
+    # file = "PuppiSignal_104.dump"
     with PuppiData(file) as myPuppi:
-        pass
+        myPuppi.print_lines_data(0, 300, single_block=True)
