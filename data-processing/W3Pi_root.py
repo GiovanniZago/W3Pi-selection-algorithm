@@ -18,56 +18,64 @@ pd.options.display.width = 1000
 
 def get_pt_group(pt):
     if pt >= HIG_PT * PT_CONV:
-        return "HIG"
+        return 2
     
     elif pt >= MED_PT * PT_CONV:
-        return "MED"
+        return 1
     
     elif pt >= MIN_PT * PT_CONV:
-        return "MIN"
+        return 0
     
     else:
-        return "NULL"
+        return -1
 
-with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f:
-    tree = f.get("Events")
+with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
+    with uproot.recreate(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_out:
+        tree = f_in.get("Events")
 
-    # FOR EACH EVENT extract the columns of the ttree and append them 
-    # to an ak array. For example, the pdg_id array will be like
-    # [pdg_id_event0_array, pdg_id_event1_array, ...]
-    # So basically each key in branches is an array of arrays
-    branches = tree.arrays()
-    n_events = 50_000 # look at the keys of the correspondent hdf5 file
+        # FOR EACH EVENT extract the columns of the ttree and append them 
+        # to an ak array. For example, the pdg_id array will be like
+        # [pdg_id_event0_array, pdg_id_event1_array, ...]
+        # So basically each key in branches is an array of arrays
+        branches = tree.arrays()
+        n_events = 1_000 # look at the keys of the correspondent hdf5 file
 
-    print(branches["GenW_mass"][6])
-    print(branches["Puppi_GenPiIdx"][6].tolist())
+        ev_idx_list = []
+        n_puppi_list = []
+        part_idxs_list = []
+        pt_groups_list = []
+        gen_mass_list = []
 
-    # df = pd.DataFrame(columns=["ev_idx", "puppi_idx", "pt_groups"])
+        for ev_idx in tqdm(range(n_events)):
+            gen_idx = branches["Puppi_GenPiIdx"][ev_idx]
 
-    # for ev_idx in tqdm(range(n_events)):
-    #     nPuppi = branches["nPuppi"][ev_idx]
-    #     gen_idx = branches["Puppi_GenPiIdx"][ev_idx]
-    #     pts = branches["Puppi_pt"][ev_idx]
+            idx0 = ak.where(gen_idx == 0)
+            idx1 = ak.where(gen_idx == 1)
+            idx2 = ak.where(gen_idx == 2)
 
-    #     zeros_vector = ak.Array([0] * nPuppi)
-    #     idx0 = ak.where(gen_idx == 0)
-    #     idx1 = ak.where(gen_idx == 1)
-    #     idx2 = ak.where(gen_idx == 2)
+            if (ak.count(idx0) > 0) and (ak.count(idx1) > 0)  and (ak.count(idx2) > 0):
+                n_puppi = branches["nPuppi"][ev_idx]
+                pts = branches["Puppi_pt"][ev_idx]
+                gen_mass = ak.to_numpy(branches["GenW_mass"][ev_idx]).item()
+                part_idxs = [ak.to_numpy(idx0).item(), ak.to_numpy(idx1).item(), ak.to_numpy(idx2).item()]
+                part_idxs.sort()
 
-    #     if (ak.count(idx0) > 0) and (ak.count(idx1) > 0)  and (ak.count(idx2) > 0) :
-    #         pt_group0 = get_pt_group(pts[idx0])
-    #         pt_group1 = get_pt_group(pts[idx1])
-    #         pt_group2 = get_pt_group(pts[idx2])
+                pt_group0 = get_pt_group(pts[idx0])
+                pt_group1 = get_pt_group(pts[idx1])
+                pt_group2 = get_pt_group(pts[idx2])
 
-    #         df.loc[len(df)] = [ev_idx, [idx0, idx1, idx2], [pt_group0, pt_group1, pt_group2]]
-    
-    # group_counts = df["pt_groups"].value_counts()
-    # ax = group_counts.plot(kind="bar")
+                ev_idx_list.append(ev_idx)
+                n_puppi_list.append(n_puppi)
+                part_idxs_list.append(part_idxs)
+                pt_groups_list.append([pt_group0, pt_group1, pt_group2])
+                gen_mass_list.append(gen_mass)
+            
+        f_out["genmatched_tree"] = {"ev_idx": ak.Array(ev_idx_list), 
+                                    "n_puppi": ak.Array(n_puppi_list), 
+                                    "part_idxs": ak.Array(part_idxs_list), 
+                                    "pt_groups": ak.Array(pt_groups_list), 
+                                    "gen_mass": ak.Array(gen_mass_list)}
 
-    # for idx, count in enumerate(group_counts):
-    #     ax.text(idx, count + 0.1, str(count), ha="center", va="bottom")
-    
-    # plt.subplots_adjust(bottom=0.2)
+                
 
-    # plt.show()
 
