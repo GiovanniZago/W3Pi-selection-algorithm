@@ -261,6 +261,7 @@ def main():
                                     triplet_score = pts[hig_target_idx0] + pts[hig_target_idx1] + pts[hig_target_idx2]
 
                                     if triplet_score > best_triplet_score:
+                                        best_triplet_score = triplet_score
                                         triplet_idxs = [hig_target_idx0, hig_target_idx1, hig_target_idx2]
                                         reco_mass = invariant_mass
 

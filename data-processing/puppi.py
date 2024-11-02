@@ -4,12 +4,15 @@ import os
 import struct
 import h5py
 import numpy as np
+import uproot
+import awkward as ak
 
 class PuppiData:
-    line_size = 8
+    line_size = 8 # each line is 8 bytes
     data_path = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
     head_columns = ["idx", "vld_header", "err_bit", "lr_number", "orbit_cnt", "bx_cnt", "n_cand"]
     part_columns = ["idx", "pdg_id", "phi", "eta", "pt"]
+
 
     def __init__(self, file_name):
         self.file_name = file_name
@@ -52,7 +55,7 @@ class PuppiData:
 
         return lines_str
 
-    def get_lines_data(self, idx_start, idx_end=None, single_block=False):
+    def get_lines_data(self, idx_start, idx_end=None):
         if not idx_end:
             lines_str = [self._get_line(idx_start)]
             idx_end = idx_start + 1
@@ -73,35 +76,27 @@ class PuppiData:
             
             if ((not is_null) and (header["err_bit"] == 0) and (header["lr_num"] == 0)
                     and (header["orbit_cnt"] < 100_000) and (header["bx_cnt"] <= 3563) and (header["n_cand"] >= 0)):
-                headers_data.append((idx, header["vld_header"], header["err_bit"], header["lr_num"], 
-                                     header["orbit_cnt"], header["bx_cnt"], header["n_cand"]))
+                headers_data.append([idx, header["vld_header"], header["err_bit"], header["lr_num"], 
+                                     header["orbit_cnt"], header["bx_cnt"], header["n_cand"]])
             else:
                 particle = self._unpack_particle(line_str)
                 if is_null: particle["pdg_id"] = 0
-                particles_data.append((idx, particle["pdg_id"], particle["phi"], particle["eta"], particle["pt"]))
+                particles_data.append([idx, particle["pdg_id"], particle["phi"], particle["eta"], particle["pt"]])
                 
-        if single_block:
-            headers_data = [(header[0], 0, 0, 0, 0) for header in headers_data] # keep only index and n_cand if you want
-            data = headers_data + particles_data
-            data.sort(key=lambda x: x[0])       
-            return data
-        else:
-            return (headers_data, particles_data)
+        return np.array(headers_data), np.array(particles_data)
 
         
-    def print_lines_data(self, idx_start, idx_end=None, single_block=False):
-        if not single_block:
-            headers_data, particles_data = self.get_lines_data(idx_start, idx_end)
+    def print_lines_data(self, idx_start, idx_end=None):
+        headers_data, particles_data = self.get_lines_data(idx_start, idx_end)
 
+        if len(headers_data) > 0:
             self._print_table(headers_data, self.head_columns)
             print("\n\n")
-            self._print_table(particles_data, self.part_columns)
-        else:
-            data = self.get_lines_data(idx_start, idx_end, single_block)
-            self._print_table(data, self.part_columns)
+
+        self._print_table(particles_data, self.part_columns)
     
 
-    def pad_file(self, ev_size, out_file_name, include_headers = False):
+    def pad_file(self, ev_size, out_file_name, include_headers=False):
         if not self.file:
             raise ValueError("File not opened. Call self.open_file() first or enter the context.")
         
@@ -243,6 +238,85 @@ class PuppiData:
                 # save all the rows but skip the first column since it's the index
                 # and also skip the first row since it is the header
                 f.create_dataset(d_name, data=data[1:,1:])     
+
+    def to_uproot(self, ev_size, has_headers=False):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name = str.split(self.file_name, ".")[0] + ".root"
+
+        block_size = ev_size if (not has_headers) else ev_size + 1
+        foo = self.file_rows % block_size
+
+        if foo != 0:
+            raise ValueError("The number of rows in the file is not a multiple of block_size = ev_size + 1.")
+        
+        n_events = int(self.file_rows / block_size)
+
+        idxs_start = [x * block_size for x in range(n_events)]
+        idxs_end = [x * block_size for x in range(1, n_events+1)]
+
+        if has_headers:
+            # create headers awkward arrays
+            vld_header_array = ak.Array([])
+            err_bit_array = ak.Array([])
+            lr_num_array = ak.Array([])
+            orbit_cnt_array = ak.Array([])
+            bx_cnt_array = ak.Array([])
+            n_cand_array = ak.Array([])
+
+        # create particles awkward arrays
+        pts_array = ak.Array([])
+        etas_array = ak.Array([])
+        phis_array = ak.Array([])
+        pdg_ids_array = ak.Array([])
+
+        with uproot.recreate(self.data_path + file_out_name) as f:
+            for idx_event, (idx_start, idx_end) in enumerate(zip(idxs_start, idxs_end)):
+                head_data, part_data = self.get_lines_data(idx_start, idx_end)
+                
+                if has_headers:
+                    if (len(head_data.shape) > 1):
+                        ValueError(f"More than one header detected in Event #{idx_event}")
+
+                    # headers current arrrays
+                    vld_header_cur = ak.Array(head_data[1])
+                    err_bit_cur = ak.Array(head_data[2])
+                    lr_num_cur = ak.Array(head_data[3])
+                    orbit_cnt_cur = ak.Array(head_data[4])
+                    bx_cnt_cur = ak.Array(head_data[5])
+                    n_cand_cur = ak.Array(head_data[6])
+
+                    # update headers arrays
+                    vld_header_array = ak.concatenate([vld_header_array, [vld_header_cur]])
+                    err_bit_array = ak.concatenate([err_bit_array, [err_bit_cur]])
+                    lr_num_array = ak.concatenate([lr_num_array, [lr_num_cur]])
+                    orbit_cnt_array = ak.concatenate([orbit_cnt_array, [orbit_cnt_cur]])
+                    bx_cnt_array = ak.concatenate([bx_cnt_array, [bx_cnt_cur]])
+                    n_cand_array = ak.concatenate([n_cand_array, [n_cand_cur]])
+
+                # particles current arrays
+                pdg_ids_cur = ak.Array(part_data[:,1])
+                phis_cur = ak.Array(part_data[:,2])
+                etas_cur = ak.Array(part_data[:,3])
+                pts_cur = ak.Array(part_data[:,4])
+                
+                # update particles arrays
+                pts_array = ak.concatenate([pts_array, [pts_cur]])
+                etas_array = ak.concatenate([etas_array, [etas_cur]])
+                phis_array = ak.concatenate([phis_array, [phis_cur]])
+                pdg_ids_array = ak.concatenate([pdg_ids_array, [pdg_ids_cur]])
+
+            f["Events"] = {"pt": pts_array, "eta": etas_array, "phis": phis_array, "pdg_id": pdg_ids_array}
+            f["Headers"] = {"vld_header": vld_header_array, 
+                            "err_bit": err_bit_array, 
+                            "lr_num": lr_num_array, 
+                            "orbit_cnt": orbit_cnt_array, 
+                            "bx_cnt": bx_cnt_array, 
+                            "n_cand": n_cand_array}
+
+
+
     
     def _print_table(self, data, column_names):
         columns = len(column_names)
@@ -340,10 +414,10 @@ class PuppiData:
     
 if __name__ == "__main__":
     # file = "Puppi.dump"
-    # file = "Puppi_104.dump"
+    # file = "Puppi_224.dump"
     # file = "Puppi_104_nh.dump"
-    file = "Puppi_208_nh.dump"
+    # file = "Puppi_208_nh.dump"
     # file = "puppi_WTo3Pion_PU200.dump"
-    # file = "PuppiSignal_104.dump"
+    file = "PuppiSignal_224.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(0, 300, single_block=True)
+        myPuppi.to_uproot(224)
