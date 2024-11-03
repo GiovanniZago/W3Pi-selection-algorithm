@@ -6,6 +6,7 @@ import h5py
 import numpy as np
 import uproot
 import awkward as ak
+from tqdm import tqdm
 
 class PuppiData:
     line_size = 8 # each line is 8 bytes
@@ -190,25 +191,6 @@ class PuppiData:
                 row_data = struct.unpack("q", row_bytes)
                 puppi_csv.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
 
-    def lines_to_aiecsv(self, idx_start, idx_end):
-        if not self.file:
-            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
-        
-        file_out_name_H = str.split(self.file_name, ".")[0] + "_lines_H.csv"
-        file_out_name_L = str.split(self.file_name, ".")[0] + "_lines_L.csv"
-
-        with open(self.data_path + "/aie_data/" + file_out_name_H, "w") as puppi_csv_H:
-            with open(self.data_path + "/aie_data/" + file_out_name_L, "w") as puppi_csv_L:
-                puppi_csv_H.write("CMD,D,TLAST,TKEEP\n")
-                puppi_csv_L.write("CMD,D,TLAST,TKEEP\n")
-
-                lines = self._get_lines(idx_start, idx_end)
-                for line in lines:
-                    row_data = struct.unpack("ii", line)
-                    puppi_csv_H.write("DATA," + f"{str(row_data[1])}," + "0," + "-1\n")
-                    puppi_csv_L.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
-
-
     def to_hdf5(self, ev_size):
         if not self.file:
             raise ValueError("File not opened. Call self.open_file() first or enter the context.")
@@ -237,7 +219,7 @@ class PuppiData:
 
                 # save all the rows but skip the first column since it's the index
                 # and also skip the first row since it is the header
-                f.create_dataset(d_name, data=data[1:,1:])     
+                f.create_dataset(d_name, data=data[1:,1:])   
 
     def to_uproot(self, ev_size, has_headers=False):
         if not self.file:
@@ -249,7 +231,7 @@ class PuppiData:
         foo = self.file_rows % block_size
 
         if foo != 0:
-            raise ValueError("The number of rows in the file is not a multiple of block_size = ev_size + 1.")
+            raise ValueError("The number of rows in the file is not a multiple of block_size.")
         
         n_events = int(self.file_rows / block_size)
 
@@ -257,19 +239,19 @@ class PuppiData:
         idxs_end = [x * block_size for x in range(1, n_events+1)]
 
         if has_headers:
-            # create headers awkward arrays
-            vld_header_array = ak.Array([])
-            err_bit_array = ak.Array([])
-            lr_num_array = ak.Array([])
-            orbit_cnt_array = ak.Array([])
-            bx_cnt_array = ak.Array([])
-            n_cand_array = ak.Array([])
+            # create headers numpy arrays
+            vld_header_array = np.zeros(n_events)
+            err_bit_array    = np.zeros(n_events)
+            lr_num_array     = np.zeros(n_events)
+            orbit_cnt_array  = np.zeros(n_events)
+            bx_cnt_array     = np.zeros(n_events)
+            n_cand_array     = np.zeros(n_events)
 
-        # create particles awkward arrays
-        pts_array = ak.Array([])
-        etas_array = ak.Array([])
-        phis_array = ak.Array([])
-        pdg_ids_array = ak.Array([])
+        # create particles numpy arrays
+        pts_array     = np.zeros((n_events, ev_size), dtype="int32")
+        etas_array    = np.zeros((n_events, ev_size), dtype="int32")
+        phis_array    = np.zeros((n_events, ev_size), dtype="int32")
+        pdg_ids_array = np.zeros((n_events, ev_size), dtype="int32")
 
         with uproot.recreate(self.data_path + file_out_name) as f:
             for idx_event, (idx_start, idx_end) in enumerate(zip(idxs_start, idxs_end)):
@@ -279,45 +261,36 @@ class PuppiData:
                     if (len(head_data.shape) > 1):
                         ValueError(f"More than one header detected in Event #{idx_event}")
 
-                    # headers current arrrays
-                    vld_header_cur = ak.Array(head_data[1])
-                    err_bit_cur = ak.Array(head_data[2])
-                    lr_num_cur = ak.Array(head_data[3])
-                    orbit_cnt_cur = ak.Array(head_data[4])
-                    bx_cnt_cur = ak.Array(head_data[5])
-                    n_cand_cur = ak.Array(head_data[6])
-
                     # update headers arrays
-                    vld_header_array = ak.concatenate([vld_header_array, [vld_header_cur]])
-                    err_bit_array = ak.concatenate([err_bit_array, [err_bit_cur]])
-                    lr_num_array = ak.concatenate([lr_num_array, [lr_num_cur]])
-                    orbit_cnt_array = ak.concatenate([orbit_cnt_array, [orbit_cnt_cur]])
-                    bx_cnt_array = ak.concatenate([bx_cnt_array, [bx_cnt_cur]])
-                    n_cand_array = ak.concatenate([n_cand_array, [n_cand_cur]])
+                    vld_header_array[idx_event] = head_data[1]
+                    err_bit_array[idx_event]    = head_data[2]
+                    lr_num_array[idx_event]     = head_data[3]
+                    orbit_cnt_array[idx_event]  = head_data[4]
+                    bx_cnt_array[idx_event]     = head_data[5]
+                    n_cand_array[idx_event]     = head_data[6]
 
-                # particles current arrays
-                pdg_ids_cur = ak.Array(part_data[:,1])
-                phis_cur = ak.Array(part_data[:,2])
-                etas_cur = ak.Array(part_data[:,3])
-                pts_cur = ak.Array(part_data[:,4])
-                
                 # update particles arrays
-                pts_array = ak.concatenate([pts_array, [pts_cur]])
-                etas_array = ak.concatenate([etas_array, [etas_cur]])
-                phis_array = ak.concatenate([phis_array, [phis_cur]])
-                pdg_ids_array = ak.concatenate([pdg_ids_array, [pdg_ids_cur]])
+                pdg_ids_array[idx_event] = part_data[:,1]
+                phis_array[idx_event]    = part_data[:,2]
+                etas_array[idx_event]    = part_data[:,3]
+                pts_array[idx_event]     = part_data[:,4]
 
-            f["Events"] = {"pt": pts_array, "eta": etas_array, "phis": phis_array, "pdg_id": pdg_ids_array}
-            f["Headers"] = {"vld_header": vld_header_array, 
-                            "err_bit": err_bit_array, 
-                            "lr_num": lr_num_array, 
-                            "orbit_cnt": orbit_cnt_array, 
-                            "bx_cnt": bx_cnt_array, 
-                            "n_cand": n_cand_array}
+            f["Events"] = {"pt":      ak.from_numpy(pts_array), 
+                            "eta":    ak.from_numpy(etas_array), 
+                            "phi":   ak.from_numpy(phis_array), 
+                            "pdg_id": ak.from_numpy(pdg_ids_array)}
+            
+            f["Metadata"] = {"n_events": ak.Array([n_events]), 
+                             "ev_size": ak.Array([ev_size])}
 
+            if has_headers:
+                f["Headers"] = {"vld_header": ak.from_numpy(vld_header_array), 
+                                "err_bit":    ak.from_numpy(err_bit_array), 
+                                "lr_num":     ak.from_numpy(lr_num_array), 
+                                "orbit_cnt":  ak.from_numpy(orbit_cnt_array), 
+                                "bx_cnt":     ak.from_numpy(bx_cnt_array), 
+                                "n_cand":     ak.from_numpy(n_cand_array)}
 
-
-    
     def _print_table(self, data, column_names):
         columns = len(column_names)
         col_widths = [max(len(str(row[i])) for row in data) for i in range(columns)]

@@ -1,0 +1,1812 @@
+No. gentmatched events = 10628
+No. reconstructed events = 258 (2.43 %)
+
+
+
+Event #1 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [3 5 6]
+Generated W mass: 82.75
+Reconstructed triplet: [3 5 6]
+Reconstructed W mass: 82.84051295072965
+
+
+Event #6 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [17 18 25]
+Generated W mass: 78.5
+Reconstructed triplet: [17 18 25]
+Reconstructed W mass: 78.69669363604665
+
+
+Event #68 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 1 2]
+Generated W mass: 81.75
+Reconstructed triplet: [0 1 2]
+Reconstructed W mass: 82.13898275406402
+
+
+Event #88 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  8 13]
+Generated W mass: 83.25
+Reconstructed triplet: [ 4  8 13]
+Reconstructed W mass: 83.10168384242122
+
+
+*************************************** Event #158 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [0 2 4]
+Generated W mass: 80.5
+Genmatched triplet pt groups: [2 2 0]
+Reconstructed triplet: [0 4 7]
+Reconstructed W mass: 83.33117263478776
+
+
+Event #174 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  4 18]
+Generated W mass: 84.0
+Reconstructed triplet: [ 0  4 18]
+Reconstructed W mass: 83.42722011197216
+
+
+Event #188 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6 11 16]
+Generated W mass: 81.25
+Reconstructed triplet: [ 6 11 16]
+Reconstructed W mass: 81.14595915097885
+
+
+Event #249 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 13 19]
+Generated W mass: 77.75
+Reconstructed triplet: [ 8 13 19]
+Reconstructed W mass: 78.62974037529578
+
+
+Event #252 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 16 22]
+Generated W mass: 80.5
+Reconstructed triplet: [11 16 22]
+Reconstructed W mass: 79.95296246933513
+
+
+Event #257 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6 14 17]
+Generated W mass: 67.25
+Reconstructed triplet: [ 6 14 17]
+Reconstructed W mass: 67.74904100040442
+
+
+Event #261 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3 16 29]
+Generated W mass: 80.5
+Reconstructed triplet: [ 3 16 29]
+Reconstructed W mass: 79.92475507324868
+
+
+Event #262 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 24 30]
+Generated W mass: 81.5
+Reconstructed triplet: [16 24 30]
+Reconstructed W mass: 80.75200971734024
+
+
+Event #298 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 16 17]
+Generated W mass: 79.75
+Reconstructed triplet: [ 7 16 17]
+Reconstructed W mass: 79.43442102142475
+
+
+Event #345 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  9 10]
+Generated W mass: 81.75
+Reconstructed triplet: [ 3  9 10]
+Reconstructed W mass: 81.23974444977168
+
+
+Event #352 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  9 15]
+Generated W mass: 62.375
+Reconstructed triplet: [ 7  9 15]
+Reconstructed W mass: 61.70323728769467
+
+
+Event #355 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6  9 23]
+Generated W mass: 76.0
+Reconstructed triplet: [ 6  9 23]
+Reconstructed W mass: 76.27403837978616
+
+
+Event #377 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 5 6]
+Generated W mass: 64.5
+Reconstructed triplet: [2 5 6]
+Reconstructed W mass: 64.77633145934377
+
+
+Event #383 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 6 7]
+Generated W mass: 74.5
+Reconstructed triplet: [2 6 7]
+Reconstructed W mass: 74.52433550333532
+
+
+Event #385 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6  9 19]
+Generated W mass: 80.5
+Reconstructed triplet: [ 6  9 19]
+Reconstructed W mass: 81.11740176658368
+
+
+Event #390 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [31 46 48]
+Generated W mass: 67.25
+Reconstructed triplet: [31 46 48]
+Reconstructed W mass: 68.19047027933496
+
+
+Event #420 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 24 41]
+Generated W mass: 82.0
+Reconstructed triplet: [19 24 41]
+Reconstructed W mass: 82.54256758662187
+
+
+Event #421 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 6 8]
+Generated W mass: 82.5
+Reconstructed triplet: [2 6 8]
+Reconstructed W mass: 82.33911495731444
+
+
+Event #456 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [17 18 29]
+Generated W mass: 76.5
+Reconstructed triplet: [17 18 29]
+Reconstructed W mass: 75.43452130122552
+
+
+Event #459 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [15 16 18]
+Generated W mass: 69.0
+Reconstructed triplet: [15 16 18]
+Reconstructed W mass: 69.75030893888996
+
+
+Event #475 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 18 25]
+Generated W mass: 61.5
+Reconstructed triplet: [11 18 25]
+Reconstructed W mass: 61.600066518362645
+
+
+Event #486 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 2 6]
+Generated W mass: 87.0
+Reconstructed triplet: [0 2 6]
+Reconstructed W mass: 86.27380279556357
+
+
+Event #489 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 1 4]
+Generated W mass: 65.5
+Reconstructed triplet: [0 1 4]
+Reconstructed W mass: 65.50107550815306
+
+
+Event #504 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 5 9]
+Generated W mass: 76.75
+Reconstructed triplet: [2 5 9]
+Reconstructed W mass: 75.26292352566603
+
+
+Event #519 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  2 16]
+Generated W mass: 80.0
+Reconstructed triplet: [ 0  2 16]
+Reconstructed W mass: 81.89508477898548
+
+
+Event #589 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  7 16]
+Generated W mass: 75.25
+Reconstructed triplet: [ 3  7 16]
+Reconstructed W mass: 74.95540008406331
+
+
+Event #617 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 2 5]
+Generated W mass: 88.75
+Reconstructed triplet: [0 2 5]
+Reconstructed W mass: 90.0443906733976
+
+
+Event #618 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [20 21 29]
+Generated W mass: 77.25
+Reconstructed triplet: [20 21 29]
+Reconstructed W mass: 77.68267613998883
+
+
+Event #622 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 20 25]
+Generated W mass: 68.75
+Reconstructed triplet: [19 20 25]
+Reconstructed W mass: 68.35952123890144
+
+
+Event #625 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3 14 15]
+Generated W mass: 79.5
+Reconstructed triplet: [ 3 14 15]
+Reconstructed W mass: 79.49797419955351
+
+
+Event #637 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 19 25]
+Generated W mass: 84.25
+Reconstructed triplet: [11 19 25]
+Reconstructed W mass: 84.26236088013107
+
+
+Event #639 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 15 25]
+Generated W mass: 80.75
+Reconstructed triplet: [ 9 15 25]
+Reconstructed W mass: 80.69270872746327
+
+
+Event #654 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 27 36]
+Generated W mass: 86.5
+Reconstructed triplet: [ 8 27 36]
+Reconstructed W mass: 86.28543721136063
+
+
+Event #663 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [7 8 9]
+Generated W mass: 63.125
+Reconstructed triplet: [7 8 9]
+Reconstructed W mass: 63.17250138675413
+
+
+Event #694 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 15 31]
+Generated W mass: 77.0
+Reconstructed triplet: [ 7 15 31]
+Reconstructed W mass: 77.69134844529384
+
+
+Event #696 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5  6 10]
+Generated W mass: 83.25
+Reconstructed triplet: [ 5  6 10]
+Reconstructed W mass: 83.7101779562371
+
+
+Event #699 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 27 40]
+Generated W mass: 88.25
+Reconstructed triplet: [16 27 40]
+Reconstructed W mass: 89.06697229650595
+
+
+Event #753 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  6 10]
+Generated W mass: 80.5
+Reconstructed triplet: [ 2  6 10]
+Reconstructed W mass: 80.31340111650447
+
+
+Event #762 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 10 20]
+Generated W mass: 81.5
+Reconstructed triplet: [ 7 10 20]
+Reconstructed W mass: 84.02855334283132
+
+
+Event #778 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 17 22]
+Generated W mass: 78.5
+Reconstructed triplet: [ 9 17 22]
+Reconstructed W mass: 79.07885872927119
+
+
+Event #779 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [3 7 8]
+Generated W mass: 81.0
+Reconstructed triplet: [3 7 8]
+Reconstructed W mass: 81.192368996749
+
+
+Event #800 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 15 16]
+Generated W mass: 79.25
+Reconstructed triplet: [ 9 15 16]
+Reconstructed W mass: 80.21823976441108
+
+
+Event #801 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [13 25 34]
+Generated W mass: 82.5
+Reconstructed triplet: [13 25 34]
+Reconstructed W mass: 82.87861501581015
+
+
+Event #828 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  9 15]
+Generated W mass: 60.375
+Reconstructed triplet: [ 3  9 15]
+Reconstructed W mass: 60.322702438670945
+
+
+Event #861 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  4 10]
+Generated W mass: 84.0
+Reconstructed triplet: [ 3  4 10]
+Reconstructed W mass: 82.6483147091906
+
+
+Event #873 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 11 14]
+Generated W mass: 74.0
+Reconstructed triplet: [ 4 11 14]
+Reconstructed W mass: 74.36053885846333
+
+
+Event #884 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  7 15]
+Generated W mass: 82.0
+Reconstructed triplet: [ 1  7 15]
+Reconstructed W mass: 86.29334051157899
+
+
+Event #897 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 13 16]
+Generated W mass: 86.25
+Reconstructed triplet: [12 13 16]
+Reconstructed W mass: 86.92115589115117
+
+
+Event #899 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [14 18 19]
+Generated W mass: 78.5
+Reconstructed triplet: [14 18 19]
+Reconstructed W mass: 78.89746895505468
+
+
+Event #910 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [14 25 28]
+Generated W mass: 84.75
+Reconstructed triplet: [14 25 28]
+Reconstructed W mass: 86.32092934015147
+
+
+Event #930 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 11 17]
+Generated W mass: 74.75
+Reconstructed triplet: [ 8 11 17]
+Reconstructed W mass: 75.11593357127768
+
+
+Event #934 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [18 23 30]
+Generated W mass: 77.5
+Reconstructed triplet: [18 23 30]
+Reconstructed W mass: 78.51808531274277
+
+
+Event #968 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  8 12]
+Generated W mass: 84.0
+Reconstructed triplet: [ 2  8 12]
+Reconstructed W mass: 84.93175633787187
+
+
+Event #980 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 4 6]
+Generated W mass: 95.25
+Reconstructed triplet: [1 4 6]
+Reconstructed W mass: 94.84712415860564
+
+
+Event #1048 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [34 44 45]
+Generated W mass: 84.75
+Reconstructed triplet: [34 44 45]
+Reconstructed W mass: 85.04186823299605
+
+
+Event #1073 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [21 42 45]
+Generated W mass: 80.0
+Reconstructed triplet: [21 42 45]
+Reconstructed W mass: 80.8357487451638
+
+
+Event #1090 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  4 11]
+Generated W mass: 80.5
+Reconstructed triplet: [ 1  4 11]
+Reconstructed W mass: 79.94610889754874
+
+
+Event #1145 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 20 21]
+Generated W mass: 81.5
+Reconstructed triplet: [12 20 21]
+Reconstructed W mass: 81.31079031451351
+
+
+Event #1158 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 23 26]
+Generated W mass: 78.5
+Reconstructed triplet: [19 23 26]
+Reconstructed W mass: 75.14507123095609
+
+
+Event #1163 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 20 23]
+Generated W mass: 81.5
+Reconstructed triplet: [19 20 23]
+Reconstructed W mass: 81.27507308768092
+
+
+Event #1204 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 14 15]
+Generated W mass: 76.5
+Reconstructed triplet: [ 7 14 15]
+Reconstructed W mass: 76.37886059451714
+
+
+Event #1231 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 4 9]
+Generated W mass: 85.25
+Reconstructed triplet: [0 4 9]
+Reconstructed W mass: 86.47511282981493
+
+
+Event #1241 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [15 23 30]
+Generated W mass: 91.25
+Reconstructed triplet: [15 23 30]
+Reconstructed W mass: 89.68873550075004
+
+
+Event #1257 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  7 15]
+Generated W mass: 83.75
+Reconstructed triplet: [ 0  7 15]
+Reconstructed W mass: 83.99986656842955
+
+
+Event #1281 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  3 14]
+Generated W mass: 79.5
+Reconstructed triplet: [ 0  3 14]
+Reconstructed W mass: 79.49172426347042
+
+
+Event #1326 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 12 13]
+Generated W mass: 80.0
+Reconstructed triplet: [ 7 12 13]
+Reconstructed W mass: 79.14105555482394
+
+
+Event #1368 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 23 24]
+Generated W mass: 81.5
+Reconstructed triplet: [16 23 24]
+Reconstructed W mass: 82.14548371493949
+
+
+Event #1425 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 12 28]
+Generated W mass: 83.25
+Reconstructed triplet: [ 9 12 28]
+Reconstructed W mass: 84.00045974120258
+
+
+Event #1459 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 16 18]
+Generated W mass: 69.75
+Reconstructed triplet: [11 16 18]
+Reconstructed W mass: 69.53799096544391
+
+
+Event #1515 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [20 23 28]
+Generated W mass: 80.5
+Reconstructed triplet: [20 23 28]
+Reconstructed W mass: 79.11515054275581
+
+
+Event #1525 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 14 17]
+Generated W mass: 86.75
+Reconstructed triplet: [ 7 14 17]
+Reconstructed W mass: 86.96677492474052
+
+
+Event #1526 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  7 10]
+Generated W mass: 81.75
+Reconstructed triplet: [ 2  7 10]
+Reconstructed W mass: 82.35394141123703
+
+
+Event #1578 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  3 10]
+Generated W mass: 83.5
+Reconstructed triplet: [ 2  3 10]
+Reconstructed W mass: 83.50777129836891
+
+
+Event #1588 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  9 15]
+Generated W mass: 82.25
+Reconstructed triplet: [ 0  9 15]
+Reconstructed W mass: 82.583838094579
+
+
+Event #1589 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [3 4 7]
+Generated W mass: 78.25
+Reconstructed triplet: [3 4 7]
+Reconstructed W mass: 77.49542709204796
+
+
+Event #1599 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 22 27]
+Generated W mass: 91.0
+Reconstructed triplet: [ 5 22 27]
+Reconstructed W mass: 89.65360423109556
+
+
+Event #1634 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 19 34]
+Generated W mass: 94.5
+Reconstructed triplet: [ 8 19 34]
+Reconstructed W mass: 94.96417306839787
+
+
+Event #1640 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 24 25]
+Generated W mass: 82.5
+Reconstructed triplet: [ 9 24 25]
+Reconstructed W mass: 83.61605685587924
+
+
+Event #1645 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [3 4 9]
+Generated W mass: 80.25
+Reconstructed triplet: [3 4 9]
+Reconstructed W mass: 79.76186497579151
+
+
+Event #1660 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 4 5]
+Generated W mass: 80.25
+Reconstructed triplet: [0 4 5]
+Reconstructed W mass: 79.77078303271279
+
+
+Event #1746 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 5 9]
+Generated W mass: 68.0
+Reconstructed triplet: [0 5 9]
+Reconstructed W mass: 69.07158780311691
+
+
+Event #1748 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 31 36]
+Generated W mass: 97.25
+Reconstructed triplet: [12 31 36]
+Reconstructed W mass: 98.24457668685103
+
+
+Event #1769 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 16 23]
+Generated W mass: 84.5
+Reconstructed triplet: [ 9 16 23]
+Reconstructed W mass: 88.67238233141008
+
+
+Event #1776 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 19 29]
+Generated W mass: 78.25
+Reconstructed triplet: [ 0 19 29]
+Reconstructed W mass: 79.70654064976263
+
+
+Event #1808 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 11 13]
+Generated W mass: 84.75
+Reconstructed triplet: [ 8 11 13]
+Reconstructed W mass: 84.55378015613279
+
+
+Event #1820 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 17 28]
+Generated W mass: 79.25
+Reconstructed triplet: [11 17 28]
+Reconstructed W mass: 79.53051078390875
+
+
+Event #1821 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 3 5]
+Generated W mass: 79.0
+Reconstructed triplet: [2 3 5]
+Reconstructed W mass: 78.44940843676417
+
+
+Event #1837 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 13 32]
+Generated W mass: 93.5
+Reconstructed triplet: [ 8 13 32]
+Reconstructed W mass: 94.93192610024214
+
+
+Event #1864 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  7 13]
+Generated W mass: 76.0
+Reconstructed triplet: [ 1  7 13]
+Reconstructed W mass: 76.78494995052934
+
+
+Event #1869 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 17 20]
+Generated W mass: 83.5
+Reconstructed triplet: [ 7 17 20]
+Reconstructed W mass: 84.34060867085873
+
+
+Event #1893 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5  6 10]
+Generated W mass: 80.0
+Reconstructed triplet: [ 5  6 10]
+Reconstructed W mass: 80.61834809133238
+
+
+Event #1921 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6  9 18]
+Generated W mass: 76.5
+Reconstructed triplet: [ 6  9 18]
+Reconstructed W mass: 76.41822462488527
+
+
+Event #1937 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [14 40 41]
+Generated W mass: 72.5
+Reconstructed triplet: [14 40 41]
+Reconstructed W mass: 72.68414967776208
+
+
+Event #1946 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 21 26]
+Generated W mass: 81.0
+Reconstructed triplet: [19 21 26]
+Reconstructed W mass: 80.67537020985685
+
+
+Event #1959 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 11 12]
+Generated W mass: 77.25
+Reconstructed triplet: [ 8 11 12]
+Reconstructed W mass: 76.05326851534272
+
+
+Event #1975 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 4 6]
+Generated W mass: 74.75
+Reconstructed triplet: [0 4 6]
+Reconstructed W mass: 75.28095324658956
+
+
+Event #1992 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 6 9]
+Generated W mass: 92.25
+Reconstructed triplet: [1 6 9]
+Reconstructed W mass: 92.00670442354495
+
+
++++++++++++++++++++++++++++++++++++++++ Event #2025 has a reconstructed triplet that is not genmatched
+Reconstructed triplet: [3 4 7]
+Reconstructed W mass: 88.68429611769761
+
+
+Event #2030 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 17 18]
+Generated W mass: 84.75
+Reconstructed triplet: [11 17 18]
+Reconstructed W mass: 85.55785587720398
+
+
+Event #2040 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  8 10]
+Generated W mass: 76.5
+Reconstructed triplet: [ 7  8 10]
+Reconstructed W mass: 75.80445768028304
+
+
+Event #2100 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 17 19]
+Generated W mass: 84.75
+Reconstructed triplet: [ 8 17 19]
+Reconstructed W mass: 83.95090280019218
+
+
+Event #2126 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 3 4]
+Generated W mass: 78.25
+Reconstructed triplet: [1 3 4]
+Reconstructed W mass: 77.59030978152722
+
+
+Event #2185 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  6 24]
+Generated W mass: 88.0
+Reconstructed triplet: [ 2  6 24]
+Reconstructed W mass: 88.37331487309038
+
+
+Event #2192 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  6 10]
+Generated W mass: 97.5
+Reconstructed triplet: [ 1  6 10]
+Reconstructed W mass: 98.73806043143178
+
+
+Event #2194 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [20 28 29]
+Generated W mass: 83.75
+Reconstructed triplet: [20 28 29]
+Reconstructed W mass: 84.35297667309788
+
+
+Event #2216 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [18 23 27]
+Generated W mass: 67.25
+Reconstructed triplet: [18 23 27]
+Reconstructed W mass: 67.64120062467472
+
+
+Event #2229 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1 15 17]
+Generated W mass: 80.0
+Reconstructed triplet: [ 1 15 17]
+Reconstructed W mass: 79.86651601981869
+
+
+Event #2235 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [30 32 33]
+Generated W mass: 84.5
+Reconstructed triplet: [30 32 33]
+Reconstructed W mass: 85.43152625575351
+
+
+Event #2256 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [20 28 30]
+Generated W mass: 77.25
+Reconstructed triplet: [20 28 30]
+Reconstructed W mass: 77.5704566155293
+
+
+Event #2265 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 11 15]
+Generated W mass: 77.5
+Reconstructed triplet: [ 8 11 15]
+Reconstructed W mass: 77.02697633818639
+
+
+Event #2298 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 20 35]
+Generated W mass: 82.5
+Reconstructed triplet: [19 20 35]
+Reconstructed W mass: 83.18902499950765
+
+
+Event #2304 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 15 16]
+Generated W mass: 88.75
+Reconstructed triplet: [ 4 15 16]
+Reconstructed W mass: 88.33924633223896
+
+
+Event #2352 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 14 31]
+Generated W mass: 76.5
+Reconstructed triplet: [ 4 14 31]
+Reconstructed W mass: 76.79759839747938
+
+
+Event #2354 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 4 8]
+Generated W mass: 80.75
+Reconstructed triplet: [1 4 8]
+Reconstructed W mass: 82.36806284804884
+
+
+Event #2358 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 11 18]
+Generated W mass: 64.5
+Reconstructed triplet: [ 7 11 18]
+Reconstructed W mass: 64.76210541851977
+
+
+Event #2371 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 10 16]
+Generated W mass: 76.75
+Reconstructed triplet: [ 0 10 16]
+Reconstructed W mass: 78.07508418622473
+
+
+Event #2429 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  9 10]
+Generated W mass: 72.75
+Reconstructed triplet: [ 0  9 10]
+Reconstructed W mass: 72.88106832742041
+
+
+Event #2454 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  9 18]
+Generated W mass: 74.25
+Reconstructed triplet: [ 0  9 18]
+Reconstructed W mass: 74.55398091323885
+
+
+Event #2467 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 10 12]
+Generated W mass: 70.75
+Reconstructed triplet: [ 9 10 12]
+Reconstructed W mass: 72.45563805943907
+
+
+Event #2468 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 11 16]
+Generated W mass: 70.5
+Reconstructed triplet: [ 5 11 16]
+Reconstructed W mass: 69.74718577469672
+
+
+Event #2517 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  9 14]
+Generated W mass: 87.5
+Reconstructed triplet: [ 7  9 14]
+Reconstructed W mass: 87.8751361470195
+
+
+Event #2559 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [15 16 19]
+Generated W mass: 78.75
+Reconstructed triplet: [15 16 19]
+Reconstructed W mass: 80.25516245937365
+
+
+Event #2567 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [21 22 29]
+Generated W mass: 77.5
+Reconstructed triplet: [21 22 29]
+Reconstructed W mass: 77.51176451935797
+
+
+Event #2570 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 15 21]
+Generated W mass: 88.25
+Reconstructed triplet: [ 7 15 21]
+Reconstructed W mass: 87.86610975450535
+
+
+Event #2575 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [4 5 6]
+Generated W mass: 80.5
+Reconstructed triplet: [4 5 6]
+Reconstructed W mass: 81.08905251172246
+
+
+Event #2626 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 1 4]
+Generated W mass: 97.75
+Reconstructed triplet: [0 1 4]
+Reconstructed W mass: 98.72560706208174
+
+
+Event #2630 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  7 14]
+Generated W mass: 81.25
+Reconstructed triplet: [ 4  7 14]
+Reconstructed W mass: 80.85634442553543
+
+
+Event #2634 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 12 14]
+Generated W mass: 87.25
+Reconstructed triplet: [ 4 12 14]
+Reconstructed W mass: 87.41504600577746
+
+
+Event #2635 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3 10 13]
+Generated W mass: 87.25
+Reconstructed triplet: [ 3 10 13]
+Reconstructed W mass: 89.64960848181391
+
+
+*************************************** Event #2639 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [16 18 20]
+Generated W mass: 81.25
+Genmatched triplet pt groups: [2 2 2]
+Reconstructed triplet: [ 9 18 20]
+Reconstructed W mass: 84.24387933522478
+
+
+Event #2667 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6 24 27]
+Generated W mass: 84.75
+Reconstructed triplet: [ 6 24 27]
+Reconstructed W mass: 84.1772132860067
+
+
+Event #2680 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 3 7]
+Generated W mass: 85.0
+Reconstructed triplet: [2 3 7]
+Reconstructed W mass: 86.7504385258339
+
+
+Event #2692 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  8 15]
+Generated W mass: 85.5
+Reconstructed triplet: [ 7  8 15]
+Reconstructed W mass: 85.64669494671585
+
+
+Event #2698 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 7 9]
+Generated W mass: 76.75
+Reconstructed triplet: [0 7 9]
+Reconstructed W mass: 79.09702707575467
+
+
+Event #2710 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  8 17]
+Generated W mass: 92.75
+Reconstructed triplet: [ 4  8 17]
+Reconstructed W mass: 94.09453374716067
+
+
+Event #2763 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2 10 26]
+Generated W mass: 90.0
+Reconstructed triplet: [ 2 10 26]
+Reconstructed W mass: 89.05397948085377
+
+
+Event #2780 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [15 16 21]
+Generated W mass: 83.5
+Reconstructed triplet: [15 16 21]
+Reconstructed W mass: 84.12252104748158
+
+
+Event #2811 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 21 26]
+Generated W mass: 72.25
+Reconstructed triplet: [16 21 26]
+Reconstructed W mass: 71.85790326982153
+
+
+Event #2843 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 4 7]
+Generated W mass: 74.5
+Reconstructed triplet: [2 4 7]
+Reconstructed W mass: 75.1843007829489
+
+
+Event #2868 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 14 17]
+Generated W mass: 83.0
+Reconstructed triplet: [ 5 14 17]
+Reconstructed W mass: 83.55522820967758
+
+
+Event #2871 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  7 16]
+Generated W mass: 86.25
+Reconstructed triplet: [ 4  7 16]
+Reconstructed W mass: 86.6229630058723
+
+
+Event #2883 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  5 10]
+Generated W mass: 80.5
+Reconstructed triplet: [ 0  5 10]
+Reconstructed W mass: 79.86996326194907
+
+
+Event #2921 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 3 5]
+Generated W mass: 82.75
+Reconstructed triplet: [2 3 5]
+Reconstructed W mass: 81.69847424267779
+
+
+Event #2960 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [26 30 37]
+Generated W mass: 86.25
+Reconstructed triplet: [26 30 37]
+Reconstructed W mass: 86.50532155259074
+
+
+Event #2967 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 16 23]
+Generated W mass: 73.0
+Reconstructed triplet: [ 5 16 23]
+Reconstructed W mass: 72.39903764811143
+
+
++++++++++++++++++++++++++++++++++++++++ Event #3012 has a reconstructed triplet that is not genmatched
+Reconstructed triplet: [10 18 29]
+Reconstructed W mass: 80.43188978300594
+
+
+Event #3020 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 16 34]
+Generated W mass: 79.5
+Reconstructed triplet: [ 9 16 34]
+Reconstructed W mass: 77.77022322742978
+
+
+Event #3033 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 10 14]
+Generated W mass: 83.5
+Reconstructed triplet: [ 7 10 14]
+Reconstructed W mass: 83.60514745965209
+
+
+Event #3043 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 18 24]
+Generated W mass: 80.25
+Reconstructed triplet: [12 18 24]
+Reconstructed W mass: 80.0492791042937
+
+
+Event #3060 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  6 19]
+Generated W mass: 79.75
+Reconstructed triplet: [ 0  6 19]
+Reconstructed W mass: 80.62923114117666
+
+
+Event #3124 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 11 12]
+Generated W mass: 85.75
+Reconstructed triplet: [ 9 11 12]
+Reconstructed W mass: 85.42166580213538
+
+
+Event #3126 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [28 31 42]
+Generated W mass: 75.5
+Reconstructed triplet: [28 31 42]
+Reconstructed W mass: 75.86689874111205
+
+
+Event #3149 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  9 15]
+Generated W mass: 82.0
+Reconstructed triplet: [ 7  9 15]
+Reconstructed W mass: 83.42392591296891
+
+
+Event #3171 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 10 12]
+Generated W mass: 75.75
+Reconstructed triplet: [ 0 10 12]
+Reconstructed W mass: 74.61249436188761
+
+
+Event #3172 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 2 3]
+Generated W mass: 75.0
+Reconstructed triplet: [0 2 3]
+Reconstructed W mass: 75.13891887701688
+
+
+*************************************** Event #3177 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [ 9 13 17]
+Generated W mass: 77.5
+Genmatched triplet pt groups: [2 2 2]
+Reconstructed triplet: [ 1 13 17]
+Reconstructed W mass: 70.84183549918605
+
+
+Event #3178 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 18 31]
+Generated W mass: 92.25
+Reconstructed triplet: [12 18 31]
+Reconstructed W mass: 90.78420440171087
+
+
+Event #3185 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [18 20 23]
+Generated W mass: 93.25
+Reconstructed triplet: [18 20 23]
+Reconstructed W mass: 94.60533548326872
+
+
+Event #3246 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 20 28]
+Generated W mass: 98.25
+Reconstructed triplet: [ 0 20 28]
+Reconstructed W mass: 98.34701990957771
+
+
+Event #3249 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 12 21]
+Generated W mass: 71.5
+Reconstructed triplet: [ 8 12 21]
+Reconstructed W mass: 73.25207385171659
+
+
+Event #3293 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7  8 13]
+Generated W mass: 80.0
+Reconstructed triplet: [ 7  8 13]
+Reconstructed W mass: 81.83986199081505
+
+
+Event #3307 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 21 32]
+Generated W mass: 83.25
+Reconstructed triplet: [ 7 21 32]
+Reconstructed W mass: 82.31240560589941
+
+
+Event #3331 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 22 27]
+Generated W mass: 76.25
+Reconstructed triplet: [19 22 27]
+Reconstructed W mass: 76.74736776124819
+
+
+Event #3338 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  3 12]
+Generated W mass: 79.75
+Reconstructed triplet: [ 2  3 12]
+Reconstructed W mass: 79.30937673821619
+
+
+Event #3340 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [23 31 40]
+Generated W mass: 75.25
+Reconstructed triplet: [23 31 40]
+Reconstructed W mass: 75.3505307440014
+
+
+Event #3390 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 12 30]
+Generated W mass: 72.25
+Reconstructed triplet: [ 0 12 30]
+Reconstructed W mass: 71.96731991422601
+
+
+Event #3395 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 20 21]
+Generated W mass: 70.75
+Reconstructed triplet: [19 20 21]
+Reconstructed W mass: 70.83721161287825
+
+
+Event #3426 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5  7 13]
+Generated W mass: 83.75
+Reconstructed triplet: [ 5  7 13]
+Reconstructed W mass: 84.55138647205918
+
+
+Event #3480 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  7 11]
+Generated W mass: 78.75
+Reconstructed triplet: [ 2  7 11]
+Reconstructed W mass: 79.31321075364224
+
+
+Event #3503 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 24 32]
+Generated W mass: 77.25
+Reconstructed triplet: [12 24 32]
+Reconstructed W mass: 76.55426327504047
+
+
+Event #3561 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 19 21]
+Generated W mass: 79.5
+Reconstructed triplet: [ 8 19 21]
+Reconstructed W mass: 78.82040435790127
+
+
+Event #3565 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [10 15 20]
+Generated W mass: 81.25
+Reconstructed triplet: [10 15 20]
+Reconstructed W mass: 81.79205661896857
+
+
+Event #3573 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8  9 20]
+Generated W mass: 83.5
+Reconstructed triplet: [ 8  9 20]
+Reconstructed W mass: 82.68834094802529
+
+
+Event #3608 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 15 16]
+Generated W mass: 80.25
+Reconstructed triplet: [ 7 15 16]
+Reconstructed W mass: 79.65490114399651
+
+
+Event #3623 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 4 8]
+Generated W mass: 78.25
+Reconstructed triplet: [2 4 8]
+Reconstructed W mass: 78.74891162849322
+
+
+*************************************** Event #3627 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [ 0  1 14]
+Generated W mass: 55.875
+Genmatched triplet pt groups: [2 1 2]
+Reconstructed triplet: [ 0 14 20]
+Reconstructed W mass: 61.407522533929686
+
+
+Event #3634 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [13 14 15]
+Generated W mass: 80.0
+Reconstructed triplet: [13 14 15]
+Reconstructed W mass: 79.26556564702493
+
+
+Event #3659 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [5 6 7]
+Generated W mass: 81.25
+Reconstructed triplet: [5 6 7]
+Reconstructed W mass: 80.76444289966447
+
+
+Event #3674 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  8 23]
+Generated W mass: 83.75
+Reconstructed triplet: [ 4  8 23]
+Reconstructed W mass: 83.29230887300861
+
+
+Event #3678 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 2 8]
+Generated W mass: 95.0
+Reconstructed triplet: [0 2 8]
+Reconstructed W mass: 94.5609995267608
+
+
+Event #3685 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6  9 17]
+Generated W mass: 77.0
+Reconstructed triplet: [ 6  9 17]
+Reconstructed W mass: 73.6995572155731
+
+
+Event #3689 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  6 15]
+Generated W mass: 74.0
+Reconstructed triplet: [ 1  6 15]
+Reconstructed W mass: 74.72972625964682
+
+
+Event #3724 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  2 15]
+Generated W mass: 81.0
+Reconstructed triplet: [ 1  2 15]
+Reconstructed W mass: 80.43316856353383
+
+
+Event #3758 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  8 14]
+Generated W mass: 83.25
+Reconstructed triplet: [ 3  8 14]
+Reconstructed W mass: 83.15086458084419
+
+
+Event #3766 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3 15 19]
+Generated W mass: 79.0
+Reconstructed triplet: [ 3 15 19]
+Reconstructed W mass: 80.07217530609894
+
+
+Event #3780 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 10 20]
+Generated W mass: 82.0
+Reconstructed triplet: [ 8 10 20]
+Reconstructed W mass: 83.44328328570452
+
+
+Event #3790 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 5 8]
+Generated W mass: 80.75
+Reconstructed triplet: [2 5 8]
+Reconstructed W mass: 81.50158909617598
+
+
+Event #3796 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 12 19]
+Generated W mass: 88.25
+Reconstructed triplet: [11 12 19]
+Reconstructed W mass: 86.86133243776048
+
+
+Event #3824 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5  6 10]
+Generated W mass: 81.5
+Reconstructed triplet: [ 5  6 10]
+Reconstructed W mass: 81.13532130333985
+
+
+Event #3873 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 7 20 22]
+Generated W mass: 78.5
+Reconstructed triplet: [ 7 20 22]
+Reconstructed W mass: 79.31292464061826
+
+
+Event #3923 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 17 18]
+Generated W mass: 87.25
+Reconstructed triplet: [11 17 18]
+Reconstructed W mass: 88.59630705018924
+
+
+Event #3929 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 35 36]
+Generated W mass: 96.25
+Reconstructed triplet: [ 8 35 36]
+Reconstructed W mass: 96.43220646031476
+
+
+Event #3937 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 23 25]
+Generated W mass: 64.5
+Reconstructed triplet: [19 23 25]
+Reconstructed W mass: 65.1552711859163
+
+
+Event #3957 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1  7 10]
+Generated W mass: 73.5
+Reconstructed triplet: [ 1  7 10]
+Reconstructed W mass: 73.82743883171564
+
+
+Event #3972 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [13 14 34]
+Generated W mass: 77.25
+Reconstructed triplet: [13 14 34]
+Reconstructed W mass: 76.1324838286067
+
+
+Event #4003 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  3 10]
+Generated W mass: 85.5
+Reconstructed triplet: [ 2  3 10]
+Reconstructed W mass: 85.44017735448712
+
+
+Event #4024 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 1 14 16]
+Generated W mass: 78.75
+Reconstructed triplet: [ 1 14 16]
+Reconstructed W mass: 79.24790127247148
+
+
++++++++++++++++++++++++++++++++++++++++ Event #4040 has a reconstructed triplet that is not genmatched
+Reconstructed triplet: [17 22 29]
+Reconstructed W mass: 83.3411421294993
+
+
+Event #4050 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [24 30 32]
+Generated W mass: 82.0
+Reconstructed triplet: [24 30 32]
+Reconstructed W mass: 82.56970915780485
+
+
+Event #4078 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 17 30]
+Generated W mass: 80.25
+Reconstructed triplet: [ 8 17 30]
+Reconstructed W mass: 80.19340293618826
+
+
+Event #4095 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 3 4]
+Generated W mass: 77.0
+Reconstructed triplet: [0 3 4]
+Reconstructed W mass: 77.79696659524122
+
+
+Event #4101 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 3 6]
+Generated W mass: 73.5
+Reconstructed triplet: [0 3 6]
+Reconstructed W mass: 73.99057811103768
+
+
+Event #4114 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [25 30 44]
+Generated W mass: 82.75
+Reconstructed triplet: [25 30 44]
+Reconstructed W mass: 83.73433347179356
+
+
+Event #4124 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 10 14]
+Generated W mass: 84.5
+Reconstructed triplet: [ 5 10 14]
+Reconstructed W mass: 83.34918933558778
+
+
+Event #4182 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 21 38]
+Generated W mass: 84.0
+Reconstructed triplet: [12 21 38]
+Reconstructed W mass: 85.010470474917
+
+
+Event #4183 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 20 21]
+Generated W mass: 68.0
+Reconstructed triplet: [16 20 21]
+Reconstructed W mass: 68.22607923841308
+
+
+Event #4212 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 11 28]
+Generated W mass: 80.75
+Reconstructed triplet: [ 0 11 28]
+Reconstructed W mass: 81.3467816295043
+
+
+Event #4213 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 13 14]
+Generated W mass: 74.5
+Reconstructed triplet: [ 4 13 14]
+Reconstructed W mass: 74.59490930044507
+
+
+Event #4223 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 4 6]
+Generated W mass: 78.5
+Reconstructed triplet: [0 4 6]
+Reconstructed W mass: 79.29758473252843
+
+
+Event #4256 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  9 17]
+Generated W mass: 79.25
+Reconstructed triplet: [ 0  9 17]
+Reconstructed W mass: 82.98875154746916
+
+
+Event #4317 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5 16 24]
+Generated W mass: 81.5
+Reconstructed triplet: [ 5 16 24]
+Reconstructed W mass: 82.78965329502492
+
+
+Event #4330 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 34 35]
+Generated W mass: 81.25
+Reconstructed triplet: [12 34 35]
+Reconstructed W mass: 79.01369139090751
+
+
+Event #4335 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 2  6 12]
+Generated W mass: 81.5
+Reconstructed triplet: [ 2  6 12]
+Reconstructed W mass: 81.66132158078415
+
+
+Event #4338 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 42 45]
+Generated W mass: 76.5
+Reconstructed triplet: [11 42 45]
+Reconstructed W mass: 77.2003527734139
+
+
+Event #4347 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 12 19]
+Generated W mass: 68.75
+Reconstructed triplet: [11 12 19]
+Reconstructed W mass: 69.03307812121244
+
+
+Event #4351 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [12 21 24]
+Generated W mass: 86.5
+Reconstructed triplet: [12 21 24]
+Reconstructed W mass: 85.45257219290944
+
+
+*************************************** Event #4378 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [ 0 21 31]
+Generated W mass: 85.25
+Genmatched triplet pt groups: [2 0 2]
+Reconstructed triplet: [ 0  7 21]
+Reconstructed W mass: 75.15892137154768
+
+
+Event #4437 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 5  9 13]
+Generated W mass: 72.0
+Reconstructed triplet: [ 5  9 13]
+Reconstructed W mass: 72.05860484219295
+
+
+*************************************** Event #4448 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [17 30 37]
+Generated W mass: 82.0
+Genmatched triplet pt groups: [2 2 2]
+Reconstructed triplet: [14 30 37]
+Reconstructed W mass: 82.83961807470254
+
+
+Event #4463 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 3 7]
+Generated W mass: 72.75
+Reconstructed triplet: [1 3 7]
+Reconstructed W mass: 72.97014276328332
+
+
+Event #4471 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 18 20]
+Generated W mass: 77.5
+Reconstructed triplet: [11 18 20]
+Reconstructed W mass: 78.53938391227138
+
+
+Event #4506 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [17 20 27]
+Generated W mass: 79.25
+Reconstructed triplet: [17 20 27]
+Reconstructed W mass: 79.03346913134666
+
+
+Event #4510 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 2 9]
+Generated W mass: 79.5
+Reconstructed triplet: [0 2 9]
+Reconstructed W mass: 80.02241939844308
+
+
+Event #4516 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [19 20 21]
+Generated W mass: 81.0
+Reconstructed triplet: [19 20 21]
+Reconstructed W mass: 80.53950673921683
+
+
+Event #4521 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [13 14 21]
+Generated W mass: 79.25
+Reconstructed triplet: [13 14 21]
+Reconstructed W mass: 82.12692957744797
+
+
+Event #4546 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 5 9]
+Generated W mass: 79.5
+Reconstructed triplet: [1 5 9]
+Reconstructed W mass: 78.83111007600236
+
+
+Event #4563 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 3 7]
+Generated W mass: 81.25
+Reconstructed triplet: [0 3 7]
+Reconstructed W mass: 81.72589282950457
+
+
+Event #4574 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  8 11]
+Generated W mass: 81.75
+Reconstructed triplet: [ 3  8 11]
+Reconstructed W mass: 81.50034576356951
+
+
+Event #4583 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 1 3]
+Generated W mass: 78.25
+Reconstructed triplet: [0 1 3]
+Reconstructed W mass: 78.85254222660099
+
+
+Event #4588 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [16 22 24]
+Generated W mass: 84.75
+Reconstructed triplet: [16 22 24]
+Reconstructed W mass: 85.37091628179368
+
+
+Event #4603 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [23 24 27]
+Generated W mass: 79.5
+Reconstructed triplet: [23 24 27]
+Reconstructed W mass: 78.57808399740809
+
+
+*************************************** Event #4609 genmatched triplet differs reconstructed triplet
+Genmatched triplet: [ 4  6 18]
+Generated W mass: 91.75
+Genmatched triplet pt groups: [2 2 2]
+Reconstructed triplet: [ 3  6 18]
+Reconstructed W mass: 91.10249587165988
+
+
+Event #4682 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 3  4 14]
+Generated W mass: 81.0
+Reconstructed triplet: [ 3  4 14]
+Reconstructed W mass: 81.08007180145938
+
+
+Event #4698 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 3 5]
+Generated W mass: 81.0
+Reconstructed triplet: [0 3 5]
+Reconstructed W mass: 76.56194984654755
+
+
+Event #4699 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0 10 14]
+Generated W mass: 80.25
+Reconstructed triplet: [ 0 10 14]
+Reconstructed W mass: 80.97907874909167
+
+
+Event #4725 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [0 1 3]
+Generated W mass: 87.25
+Reconstructed triplet: [0 1 3]
+Reconstructed W mass: 86.71969445227379
+
+
+Event #4728 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 12 15]
+Generated W mass: 70.0
+Reconstructed triplet: [ 8 12 15]
+Reconstructed W mass: 70.37767919044599
+
+
+Event #4742 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 9 10 12]
+Generated W mass: 78.5
+Reconstructed triplet: [ 9 10 12]
+Reconstructed W mass: 78.43897816235862
+
+
+Event #4763 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [15 16 18]
+Generated W mass: 83.25
+Reconstructed triplet: [15 16 18]
+Reconstructed W mass: 83.43011242704375
+
+
+Event #4775 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [24 25 26]
+Generated W mass: 84.0
+Reconstructed triplet: [24 25 26]
+Reconstructed W mass: 84.58105561364899
+
+
+Event #4777 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [4 7 9]
+Generated W mass: 87.75
+Reconstructed triplet: [4 7 9]
+Reconstructed W mass: 90.41652662819492
+
+
+Event #4782 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [1 7 9]
+Generated W mass: 80.75
+Reconstructed triplet: [1 7 9]
+Reconstructed W mass: 80.50330673482729
+
+
+Event #4805 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6  8 10]
+Generated W mass: 77.0
+Reconstructed triplet: [ 6  8 10]
+Reconstructed W mass: 77.53305541642632
+
+
+Event #4830 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 0  4 14]
+Generated W mass: 76.75
+Reconstructed triplet: [ 0  4 14]
+Reconstructed W mass: 76.24004175741392
+
+
+Event #4845 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 8 13 24]
+Generated W mass: 79.75
+Reconstructed triplet: [ 8 13 24]
+Reconstructed W mass: 79.8518039254104
+
+
+Event #4846 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [11 13 15]
+Generated W mass: 98.75
+Reconstructed triplet: [11 13 15]
+Reconstructed W mass: 98.27690231857854
+
+
+Event #4877 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [35 36 39]
+Generated W mass: 83.25
+Reconstructed triplet: [35 36 39]
+Reconstructed W mass: 84.07715445811644
+
+
+Event #4889 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [29 30 32]
+Generated W mass: 85.75
+Reconstructed triplet: [29 30 32]
+Reconstructed W mass: 86.54854340558921
+
+
+Event #4902 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [26 41 56]
+Generated W mass: 79.0
+Reconstructed triplet: [26 41 56]
+Reconstructed W mass: 79.07615578437536
+
+
+Event #4908 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4  7 25]
+Generated W mass: 70.5
+Reconstructed triplet: [ 4  7 25]
+Reconstructed W mass: 71.32180967530967
+
+
+Event #4921 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 4 15 23]
+Generated W mass: 86.25
+Reconstructed triplet: [ 4 15 23]
+Reconstructed W mass: 86.98594410328204
+
+
+Event #4942 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [2 4 7]
+Generated W mass: 75.25
+Reconstructed triplet: [2 4 7]
+Reconstructed W mass: 75.31038472264513
+
+
+Event #4946 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [ 6 18 21]
+Generated W mass: 82.5
+Reconstructed triplet: [ 6 18 21]
+Reconstructed W mass: 82.01757101971366
+
+
+Event #4988 genmatched triplet is equal to reconstructed triplet
+Genmatched triplet: [18 27 31]
+Generated W mass: 86.0
+Reconstructed triplet: [18 27 31]
+Reconstructed W mass: 86.54141063466916
+
+

@@ -47,34 +47,33 @@ def ang_diff(x, y):
     return diff 
 
 def main():
-    file = "PuppiSignal_104.hdf5"
-    # file = "Puppi_104.hdf5"
+    file = "PuppiSignal_224.root"
 
-    with uproot.recreate(DATA_PATH + "l1Nano_WTo3Pion_reco_PU200_v1.root") as f_ur:
+    with uproot.recreate(DATA_PATH + "l1Nano_WTo3Pion_reco_PU200_v1.root") as f_out:
         ev_idx_list = []
         part_idxs_list = []
         reco_mass_list = []
 
-        with h5py.File(DATA_PATH + file, "r") as f:
-            keys = [int(k) for k in f.keys()]
-            keys.sort()
-            keys_subset = keys[0:5_000]
+        with uproot.open(DATA_PATH + file) as f_in:
+            events = f_in.get("Events")
+            branches = events.arrays()
+            
+            metadata = f_in.get("Metadata")
+            branches_md = metadata.arrays()
+            n_events = branches_md["n_events"][0]
+            ev_size = branches_md["ev_size"][0]
 
-            for k in tqdm(keys_subset):
+            events_subset = range(n_events)
+
+            for idx_event in tqdm(events_subset):
                 if VERBOSE or DEBUG_MASKS:
-                    print(f"EVENT #{k}")
+                    print(f"EVENT #{idx_event}")
 
-                idx_dataset = str(k)
-                event = f[idx_dataset][()]
-
-                c = {"pdg_id": 0, "phi": 1, "eta": 2, "pt": 3}
-                ev_size = f.attrs["ev_size"]
-
-                pdg_ids      = event[:,c["pdg_id"]].astype("int32")
-                phis         = event[:,c["phi"]].astype("int32")
-                etas         = event[:,c["eta"]].astype("int32")
-                pts          = event[:,c["pt"]].astype("int32")
-                zeros_vector = np.zeros(ev_size, dtype="int32")
+                pdg_ids      = branches["pdg_id"][idx_event].to_numpy()
+                phis         = branches["phi"][idx_event].to_numpy()
+                etas         = branches["eta"][idx_event].to_numpy()
+                pts          = branches["pt"][idx_event].to_numpy()
+                zeros_vector = np.zeros(ev_size, dtype="int16")
 
                 # PRELIMINARY DATA FILTERING
                 # find masks for minpt cut and pdg_id selection
@@ -98,7 +97,7 @@ def main():
                         d_phi[jj] = ang_diff(phi_cur, phis[jj])
 
                     dr2 = d_eta ** 2 + d_phi ** 2
-                    dr2 *= F_CONV2
+                    dr2 = dr2 * F_CONV2
 
                     pts_mask = (dr2 >= MIN_DR2) & (dr2 <= MAX_DR2)
                     pts_to_sum = np.where(pts_mask, pts, zeros_vector)
@@ -126,18 +125,8 @@ def main():
                 min_pt_mask = np.logical_xor(min_pt_mask, med_pt_mask)
                 med_pt_mask = np.logical_xor(med_pt_mask, hig_pt_mask)
 
-                min_pt_mask = min_pt_mask.astype("int16")
-                med_pt_mask = med_pt_mask.astype("int16")
-                hig_pt_mask = hig_pt_mask.astype("int16")
-
-                etas_min_pt = np.where(min_pt_mask, etas, zeros_vector).astype("int32")
-                phis_min_pt = np.where(min_pt_mask, phis, zeros_vector).astype("int32")
-
-                etas_med_pt = np.where(med_pt_mask, etas, zeros_vector).astype("int32")
-                phis_med_pt = np.where(med_pt_mask, phis, zeros_vector).astype("int32")
-
-                etas_hig_pt = np.where(hig_pt_mask, etas, zeros_vector).astype("int32")
-                phis_hig_pt = np.where(hig_pt_mask, phis, zeros_vector).astype("int32")
+                etas_hig_pt = np.where(hig_pt_mask, etas, zeros_vector)
+                phis_hig_pt = np.where(hig_pt_mask, phis, zeros_vector)
 
                 if DEBUG_MASKS:
                     print("DATA AND MASKS")
@@ -266,11 +255,11 @@ def main():
                                         reco_mass = invariant_mass
 
                 if (len(triplet_idxs) > 0):
-                    ev_idx_list.append(k)
+                    ev_idx_list.append(idx_event)
                     part_idxs_list.append(triplet_idxs)
                     reco_mass_list.append(reco_mass)    
 
-        f_ur["reco_tree"] = {"ev_idx": ak.Array(ev_idx_list), 
+        f_out["reco_tree"] = {"ev_idx": ak.Array(ev_idx_list), 
                                 "part_idxs": ak.Array(part_idxs_list), 
                                 "reco_mass": ak.Array(reco_mass_list)}
 

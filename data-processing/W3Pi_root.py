@@ -7,9 +7,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-MIN_PT  = 7 # 9
-MED_PT  = 12 # 15
-HIG_PT  = 15 # 20
+MIN_PT  = 28 # 9
+MED_PT  = 48 # 15
+HIG_PT  = 60 # 20
 PT_CONV = 0.25
 
 pd.options.display.max_rows = 200
@@ -38,7 +38,7 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
         # [pdg_id_event0_array, pdg_id_event1_array, ...]
         # So basically each key in branches is an array of arrays
         branches = tree.arrays()
-        n_events = 1_000 # look at the keys of the correspondent hdf5 file
+        n_events = 50_000 # look at the keys of the correspondent hdf5 file
 
         ev_idx_list = []
         n_puppi_list = []
