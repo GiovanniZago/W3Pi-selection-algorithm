@@ -38,8 +38,12 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
         # [pdg_id_event0_array, pdg_id_event1_array, ...]
         # So basically each key in branches is an array of arrays
         branches = tree.arrays()
+        
+        # metadata variables
         n_events = 50_000 # look at the keys of the correspondent hdf5 file
-
+        n_gen_acceptance = 0
+        
+        # genmatched_tree variables
         ev_idx_list = []
         n_puppi_list = []
         part_idxs_list = []
@@ -49,11 +53,22 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
         for ev_idx in tqdm(range(n_events)):
             gen_idx = branches["Puppi_GenPiIdx"][ev_idx]
 
+
+            n_gen_acceptance += 1
+
+            # check Genmatch condition
             idx0 = ak.where(gen_idx == 0)
             idx1 = ak.where(gen_idx == 1)
             idx2 = ak.where(gen_idx == 2)
 
             if (ak.count(idx0) > 0) and (ak.count(idx1) > 0)  and (ak.count(idx2) > 0):
+                # check detector acceptance for each particle of the triplet
+                etas = branches["Puppi_eta"][ev_idx]
+                part_etas = [etas[idx0], etas[idx1], etas[idx2]]
+
+                if not np.all(np.abs(part_etas) < 2.4):
+                    continue
+                
                 n_puppi = branches["nPuppi"][ev_idx]
                 pts = branches["Puppi_pt"][ev_idx]
                 gen_mass = ak.to_numpy(branches["GenW_mass"][ev_idx]).item()
@@ -75,6 +90,9 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
                                     "part_idxs": ak.Array(part_idxs_list), 
                                     "pt_groups": ak.Array(pt_groups_list), 
                                     "gen_mass": ak.Array(gen_mass_list)}
+        
+        f_out["metadata"] = {"n_events": ak.Array([n_events]), 
+                             "n_gen_acceptance": ak.Array([n_gen_acceptance])}
 
                 
 

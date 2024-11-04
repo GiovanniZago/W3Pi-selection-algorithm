@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
+VERBOSE = True
 
 with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genmatch:
     with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_reco_PU200_v1.root") as f_reco:
@@ -28,21 +29,31 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genma
         reco_score = (n_evts_reco / n_evts_genmatch) * 100
         print(f"No. gentmatched events = {n_evts_genmatch}")
         print(f"No. reconstructed events = {n_evts_reco} ({reco_score:.2f} %)")
-        print("\n\n")
+        print("\n")
 
         if n_evts_reco > n_evts_genmatch:
             raise ValueError(f"Reconstructed events ({n_evts_reco}) are more than Genmatched events ({n_evts_genmatch})")
+
+        # count and store scenarios
+        reco_and_genmatch = []
+        reco_not_genmatch = []
+        diff_reco = []
+        diff_genmatch = []
+        diff_pt_groups = []
 
         for i, evt_reco in enumerate(evts_reco):
             is_genmatched = np.isin(evt_reco, evts_genmatch)
 
             if not is_genmatched:
                 triplet_reco = triplets_reco[i].to_numpy()
+                reco_not_genmatch.append(triplet_reco)
                 
-                print(f"+++++++++++++++++++++++++++++++++++++++ Event #{evt_reco} has a reconstructed triplet that is not genmatched")   
-                print(f"Reconstructed triplet: {triplet_reco}")
-                print(f"Reconstructed W mass: {mass_reco[i]}")
-                print("\n")
+                if VERBOSE:
+                    print(f"+++++++++++++++++++++++++++++++++++++++ Event #{evt_reco} has a reconstructed triplet that is not genmatched")   
+                    print(f"Reconstructed triplet: {triplet_reco}")
+                    print(f"Reconstructed W mass: {mass_reco[i]}")
+                    print("\n")
+
                 continue
                         
             triplet_reco = triplets_reco[i].to_numpy()
@@ -56,21 +67,45 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genma
             are_equal = np.allclose(np.sort(triplet_genmatch), np.sort(triplet_reco))
 
             if are_equal:
-                print(f"Event #{evt_reco} genmatched triplet is equal to reconstructed triplet")
-                print(f"Genmatched triplet: {triplet_genmatch}")
-                print(f"Generated W mass: {mass_genmatch[i_gm]}")
-                print(f"Reconstructed triplet: {triplet_reco}")
-                print(f"Reconstructed W mass: {mass_reco[i]}")
-                print("\n")
+                reco_and_genmatch.append(triplet_reco)
+
+                if VERBOSE:
+                    print(f"Event #{evt_reco} genmatched triplet is equal to reconstructed triplet")
+                    print(f"Genmatched triplet: {triplet_genmatch}")
+                    print(f"Generated W mass: {mass_genmatch[i_gm]}")
+                    print(f"Reconstructed triplet: {triplet_reco}")
+                    print(f"Reconstructed W mass: {mass_reco[i]}")
+                    print("\n")
 
             else:
-                print(f"*************************************** Event #{evt_reco} genmatched triplet differs reconstructed triplet")
-                print(f"Genmatched triplet: {triplet_genmatch}")
-                print(f"Generated W mass: {mass_genmatch[i_gm]}")
-                print(f"Genmatched triplet pt groups: {pt_groups_genmatch[i_gm].to_numpy()}")
-                print(f"Reconstructed triplet: {triplet_reco}")
-                print(f"Reconstructed W mass: {mass_reco[i]}")
-                print("\n")
+                diff_reco.append(triplet_reco)
+                diff_genmatch.append(triplet_genmatch)
+                diff_pt_groups.append(pt_groups_genmatch[i_gm].to_numpy())
+
+                if VERBOSE:
+                    print(f"*************************************** Event #{evt_reco} genmatched triplet differs reconstructed triplet")
+                    print(f"Genmatched triplet: {triplet_genmatch}")
+                    print(f"Generated W mass: {mass_genmatch[i_gm]}")
+                    print(f"Genmatched triplet pt groups: {pt_groups_genmatch[i_gm].to_numpy()}")
+                    print(f"Reconstructed triplet: {triplet_reco}")
+                    print(f"Reconstructed W mass: {mass_reco[i]}")
+                    print("\n")
+
+        bars = plt.bar(["reco_and_genmatch", "reco_diff_genmatch", "reco_not_genmatch"], [len(reco_and_genmatch), len(diff_genmatch), len(reco_not_genmatch)])
+        for bar in bars:
+            yval = bar.get_height()
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,   
+                yval + 1,                            
+                int(yval),                           
+                ha='center',                         
+                va='bottom'                          
+            )
+        plt.title("AIE-Aware Python Algorithm vs Dataset")
+        plt.text(1, 2100, f"No. Genmatched Events = {n_evts_genmatch}")
+        plt.text(1, 1900, f"No. Reco Equal Events = {len(reco_and_genmatch)}")
+        plt.text(1, 1800, f"Reco Efficiency = {(len(reco_and_genmatch) / n_evts_genmatch) * 100:.2f}%")
+        plt.show()
                 
 
 

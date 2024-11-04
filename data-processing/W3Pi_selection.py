@@ -33,6 +33,7 @@ DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algor
 
 VERBOSE = False
 DEBUG_MASKS = False
+START = False
 
 def ang_diff(x, y):
     if (np.abs(x) > PI or np.abs(y) > PI):
@@ -47,6 +48,9 @@ def ang_diff(x, y):
     return diff 
 
 def main():
+    if not START:
+        exit
+
     file = "PuppiSignal_104.hdf5"
     # file = "Puppi_104.hdf5"
 
@@ -58,7 +62,7 @@ def main():
         with h5py.File(DATA_PATH + file, "r") as f:
             keys = [int(k) for k in f.keys()]
             keys.sort()
-            keys_subset = keys[0:5_000]
+            keys_subset = keys
 
             for k in tqdm(keys_subset):
                 if VERBOSE or DEBUG_MASKS:
