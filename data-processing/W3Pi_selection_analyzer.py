@@ -36,6 +36,9 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genma
 
         # count and store scenarios
         reco_and_genmatch = []
+        reco_and_genmatch_reco_mass = []
+        reco_and_genmatch_gen_mass = []
+
         reco_not_genmatch = []
         diff_reco = []
         diff_genmatch = []
@@ -68,6 +71,8 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genma
 
             if are_equal:
                 reco_and_genmatch.append(triplet_reco)
+                reco_and_genmatch_reco_mass.append(mass_reco[i])
+                reco_and_genmatch_gen_mass.append(mass_genmatch[i_gm])
 
                 if VERBOSE:
                     print(f"Event #{evt_reco} genmatched triplet is equal to reconstructed triplet")
@@ -101,11 +106,22 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_genmatched_PU200.root") as f_genma
                 ha='center',                         
                 va='bottom'                          
             )
+
         plt.title("AIE-Aware Python Algorithm vs Dataset")
-        plt.text(1, 2100, f"No. Genmatched Events = {n_evts_genmatch}")
-        plt.text(1, 1900, f"No. Reco Equal Events = {len(reco_and_genmatch)}")
-        plt.text(1, 1800, f"Reco Efficiency = {(len(reco_and_genmatch) / n_evts_genmatch) * 100:.2f}%")
+        plt.text(0.5, 2100, f"No. Genmatched Events (within acceptance) = \n {n_evts_genmatch}")
+        plt.text(0.5, 1900, f"No. Reco Equal Events = {len(reco_and_genmatch)}")
+        plt.text(0.5, 1800, f"Reco Efficiency = {(len(reco_and_genmatch) / n_evts_genmatch) * 100:.2f}%")
+        plt.ylabel("Event count")
         plt.show()
+
+        plt.hist(reco_and_genmatch_reco_mass, label="reco mass", alpha=0.5)
+        plt.hist(reco_and_genmatch_gen_mass, label="genmatched mass", alpha=0.5)
+        plt.xlabel("Invariant mass (GeV)")
+        plt.ylabel("Event count")
+        plt.legend()
+        plt.show()
+
+
                 
 
 

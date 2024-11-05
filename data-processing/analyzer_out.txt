@@ -1,5 +1,5 @@
-No. gentmatched events = 10399
-No. reconstructed events = 2301 (22.13 %)
+No. gentmatched events = 10389
+No. reconstructed events = 2301 (22.15 %)
 
 
 Event #1 genmatched triplet is equal to reconstructed triplet
