@@ -191,17 +191,17 @@ class PuppiData:
                 row_data = struct.unpack("q", row_bytes)
                 puppi_csv.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
 
-    def to_hdf5(self, ev_size):
+    def to_hdf5(self, ev_size, has_headers=False):
         if not self.file:
             raise ValueError("File not opened. Call self.open_file() first or enter the context.")
         
         file_out_name = str.split(self.file_name, ".")[0] + ".hdf5"
         
-        block_size = ev_size + 1 # + 1 is needed to take into account the header
+        block_size = ev_size if (not has_headers) else ev_size + 1
         foo = self.file_rows % block_size
 
         if foo != 0:
-            raise ValueError("The number of rows in the file is not a multiple of block_size = ev_size + 1.")
+            raise ValueError("The number of rows in the file is not a multiple of block_size.")
 
         n_events = int(self.file_rows / block_size)
         
@@ -213,13 +213,19 @@ class PuppiData:
             f.attrs["ev_size"] = ev_size
             
             for idx_event, (idx_start, idx_end) in enumerate(zip(idxs_start, idxs_end)):
-                data = self.get_lines_data(idx_start, idx_end, single_block=True)
-                data = np.array(data)
+                head_data, part_data = self.get_lines_data(idx_start, idx_end)
+                part_data = np.array(part_data)
                 d_name = str(idx_event)
 
                 # save all the rows but skip the first column since it's the index
-                # and also skip the first row since it is the header
-                f.create_dataset(d_name, data=data[1:,1:])   
+                f.create_dataset(d_name, data=part_data[:,1:])
+
+                # save the header if present
+                if has_headers:
+                    if (len(head_data.shape) > 1):
+                        ValueError(f"More than one header detected in Event #{idx_event}")
+                        
+                    f.create_dataset(d_name + "_header", data=head_data[1:])   
 
     def to_uproot(self, ev_size, has_headers=False):
         if not self.file:
