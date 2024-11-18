@@ -24,8 +24,8 @@ def get_pt_group(pt):
     else:
         return -1
 
-with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
-    with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200.hdf5", "w") as f_out:
+with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.125X_v1.root") as f_in:
+    with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200.125X_v1.hdf5", "w") as f_out:
         tree = f_in.get("Events")
 
         # FOR EACH EVENT extract the columns of the ttree and append them 
