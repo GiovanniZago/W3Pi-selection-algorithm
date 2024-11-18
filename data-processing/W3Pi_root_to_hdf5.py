@@ -6,9 +6,9 @@ import awkward as ak
 import numpy as np
 from tqdm import tqdm
 
-MIN_PT  = 28 # 9
-MED_PT  = 48 # 15
-HIG_PT  = 60 # 20
+MIN_PT  = 28 # 7
+MED_PT  = 48 # 12
+HIG_PT  = 60 # 15
 PT_CONV = 0.25
 
 def get_pt_group(pt):
@@ -49,19 +49,22 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
             grp.create_dataset("gen_pi_pt", data=branches["GenPi_pt"][ev_idx].to_numpy(), dtype=np.float32)
             grp.create_dataset("gen_pi_eta", data=branches["GenPi_eta"][ev_idx].to_numpy(), dtype=np.float32)
             grp.create_dataset("gen_pi_phi", data=branches["GenPi_phi"][ev_idx].to_numpy(), dtype=np.float32)
-            grp.create_dataset("gen_pi_mass", data=branches["GenPi_mass"][ev_idx].to_numpy(), dtype=np.float32)
+            grp.create_dataset("gen_w_mass", data=branches["GenW_mass"][ev_idx].to_numpy(), dtype=np.float32)
+
+            grp.attrs["n_puppi"] = branches["nPuppi"][ev_idx]
 
             gen_pi_pt = grp["gen_pi_pt"][...]
             gen_pi_eta = grp["gen_pi_eta"][...]
             gen_pi_idx = grp["gen_pi_idx"][...]
 
-            grp.attrs["n_puppi"] = branches["nPuppi"][ev_idx]
-
-            if (np.all(gen_pi_pt) > 2) and (np.all(gen_pi_eta) < 2.4):
-                grp.attrs["is_acceptance"] = True
+            if (np.all(gen_pi_pt > 2)) and (np.all(np.abs(gen_pi_eta) < 2.4)):
+                grp.attrs["is_acc"] = 1
             
-            else:
-                grp.attrs["is_acceptance"] = False
+            elif (np.any(gen_pi_pt > 2)) and (np.any(np.abs(gen_pi_eta) < 2.4)):
+                grp.attrs["is_acc"] = 0
+            
+            else: 
+                grp.attrs["is_acc"] = -1
 
             idx0 = np.where(gen_pi_idx == 0)[0]
             idx1 = np.where(gen_pi_idx == 1)[0]
@@ -69,29 +72,43 @@ with uproot.open(DATA_PATH + "l1Nano_WTo3Pion_PU200.root") as f_in:
 
             pt = grp["pt"][...]
 
-            if idx0.size or idx1.size or idx2.size:
-                if idx0.size and idx1.size and idx2.size:
-                    grp.attrs["is_genmatch"] = 1
-                    grp.attrs["genmatch_pi_triplet"] = np.array([idx0, idx1, idx2]).flatten()
-                    grp.attrs["genmatch_pi_group"] = np.array([get_pt_group(pt[idx0]), 
-                                                               get_pt_group(pt[idx1]), 
-                                                               get_pt_group(pt[idx2])])
+            if idx0.size and idx1.size and idx2.size:
+                grp.attrs["is_gm"] = 1
+                grp.attrs["gm_triplet_idxs"] = np.array([idx0, idx1, idx2]).flatten()
+                grp.attrs["gm_triplet_ptg"] = np.array([get_pt_group(pt[idx0]), 
+                                                           get_pt_group(pt[idx1]), 
+                                                           get_pt_group(pt[idx2])])
 
-                
+            elif idx0.size or idx1.size or idx2.size:
+                if idx0.size:
+                    ptg0 = get_pt_group(pt[idx0])
+
                 else:
-                    idx0 = idx0 if idx0.size else np.array([-1])
-                    idx1 = idx1 if idx1.size else np.array([-1])
-                    idx2 = idx2 if idx2.size else np.array([-1])
-                    grp.attrs["is_genmatch"] = 0
-                    grp.attrs["genmatch_pi_triplet"] = np.array([idx0, idx1, idx2]).flatten()
-                    grp.attrs["genmatch_pi_group"] = np.array([get_pt_group(pt[idx0]), 
-                                                               get_pt_group(pt[idx1]), 
-                                                               get_pt_group(pt[idx2])])
+                    idx0 = np.array([-1])
+                    ptg0 = -1
+
+                if idx1.size:
+                    ptg1 = get_pt_group(pt[idx1])
+
+                else:
+                    idx1 = np.array([-1])
+                    ptg1 = -1
+
+                if idx2.size:
+                    ptg2 = get_pt_group(pt[idx2])
+
+                else:
+                    idx2 = np.array([-1])
+                    ptg2 = -1
+
+                grp.attrs["is_gm"] = 0
+                grp.attrs["gm_triplet_idxs"] = np.array([idx0, idx1, idx2]).flatten()
+                grp.attrs["gm_triplet_ptg"] = np.array([ptg0, ptg1, ptg2])
             
             else:
-                grp.attrs["is_genmatch"] = -1
-                grp.attrs["genmatch_pi_triplet"] = np.array([-1, -1, -1])
-                grp.attrs["genmatch_pi_group"] = np.array([-1, -1, -1])
+                grp.attrs["is_gm"] = -1
+                grp.attrs["gm_triplet_idxs"] = np.array([-1, -1, -1])
+                grp.attrs["gm_triplet_ptg"] = np.array([-1, -1, -1])
 
             
 
