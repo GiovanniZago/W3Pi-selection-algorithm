@@ -25,7 +25,7 @@ F_CONV2        = (np.pi / PI ) ** 2
 MASS_P         = 0.13957039
 
 with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200.hdf5", "r") as f_in:
-    with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200_reco.hdf5", "w") as f_out:
+    with h5py.File(DATA_PATH + "foo.hdf5", "w") as f_out:
         ev_idxs = [int(key) for key in f_in.keys()]
         ev_idxs.sort()
 
