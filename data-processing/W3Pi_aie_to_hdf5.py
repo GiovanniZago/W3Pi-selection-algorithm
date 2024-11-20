@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
 
-with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200_aiereco.hdf5", "w") as f_out:
+with h5py.File(DATA_PATH + "Bkg_WTo3Pion_PU200_aiereco.hdf5", "w") as f_out:
     for ev_idx, ev_raw_data in tqdm(enumerate(pd.read_csv(DATA_PATH + "l1Nano_WTo3Pion_PU200_aiereco.csv", chunksize=4))):
         aiereco_triplet_idxs = ev_raw_data[" D"].to_numpy()[:3]
         aiereco_w_mass = ev_raw_data[" D"].to_numpy()[3]
