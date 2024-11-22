@@ -179,3 +179,5 @@ imgs/
 data/Puppi_208_nh.dump
 *.csv
 *.txt
+*.dump
+*.o

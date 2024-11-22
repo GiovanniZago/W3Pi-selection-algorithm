@@ -1,0 +1,29 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "g++ build",
+            "command": "/usr/bin/g++",
+            "args": [
+                "${file}",
+                "-fdiagnostics-color=always",
+                "-g",
+                "$(root-config --glibs --cflags --libs)",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.o"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "W3Pi C++"
+        }
+    ],
+    "version": "2.0.0"
+}
