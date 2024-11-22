@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug C++ WTo3Pi Selection",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/data-processing/cpp-version/W3Pi_selection.o",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/data-processing/cpp-version",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "g++ build"
+        }
+    ]
+}

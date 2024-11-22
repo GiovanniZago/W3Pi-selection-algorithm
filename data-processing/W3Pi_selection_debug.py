@@ -6,13 +6,10 @@ import awkward as ak
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-np.set_printoptions(legacy="1.25")
+DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
 
-pd.options.display.max_rows = 200
-pd.options.display.max_columns = 200
-pd.options.display.width = 1000
-
-MIN_PT         = 28 # 9
+N_HIG          = 16
+MIN_PT         = 28 # 7
 MED_PT         = 48 # 15
 HIG_PT         = 60 # 20
 MIN_DR2_ANGSEP = 0.5 * 0.5
@@ -21,260 +18,174 @@ MIN_DR2        = 0.01 * 0.01
 PI             = 720
 MAX_MASS       = 100 # 100
 MAX_DR2        = 0.25 * 0.25
-MAX_ISO        = 0.5 # USUALLY 0.5
+MAX_ISO        = 0.5 
 PT_CONV        = 0.25
 F_CONV         = np.pi / PI
 F_CONV2        = (np.pi / PI ) ** 2
+MASS_P         = 0.13957039
 
-P_BUNCHES = 13
-V_SIZE = 8
-
-DATA_PATH = "/home/giovanni/pod/thesis/code/scripts-sources/W3Pi-selection-algorithm/data/"
-
-VERBOSE = False
-DEBUG_MASKS = False
-START = False
-
-def ang_diff(x, y):
-    if (np.abs(x) > PI or np.abs(y) > PI):
-        raise ValueError("The two inputs must be inside the interval [-PI, PI]")
-
-    diff = x - y 
-    if diff > PI:
-        diff += (-2) * PI
-    elif diff < -PI:
-        diff += 2 * PI
-
-    return diff 
-
-def main():
-    if not START:
-        exit
-
-    file = "PuppiSignal_104.hdf5"
-    # file = "Puppi_104.hdf5"
-
-    ev_idx_list = []
-    part_idxs_list = []
-    reco_mass_list = []
-
-    with h5py.File(DATA_PATH + file, "r") as f:
-        keys = [int(k) for k in f.keys()]
-        keys.sort()
-        keys_subset = [keys[1]]
-
-        for k in tqdm(keys_subset):
-            if VERBOSE or DEBUG_MASKS:
-                print(f"EVENT #{k}")
-
-            idx_dataset = str(k)
-            event = f[idx_dataset][()]
-
-            c = {"pdg_id": 0, "phi": 1, "eta": 2, "pt": 3}
-            ev_size = f.attrs["ev_size"]
-
-            pdg_ids      = event[:,c["pdg_id"]].astype("int32")
-            phis         = event[:,c["phi"]].astype("int32")
-            etas         = event[:,c["eta"]].astype("int32")
-            pts          = event[:,c["pt"]].astype("int32")
-            zeros_vector = np.zeros(ev_size, dtype="int32")
-
-            # PRELIMINARY DATA FILTERING
-            # find masks for minpt cut and pdg_id selection
-            pdg_id_mask1 = np.abs(pdg_ids) == 211
-            pdg_id_mask2 = np.abs(pdg_ids) == 11
-            pdg_id_mask = pdg_id_mask1 | pdg_id_mask2
-
-            # CALCULATE ISOLATION
-            iso_mask = np.zeros(ev_size, dtype="int16") 
-
-            for ii in range(ev_size):
-                eta_cur = etas[ii]
-                phi_cur = phis[ii]
-                pt_cur = pts[ii]
-                pt_sum = 0
-
-                d_eta = eta_cur - etas
-
-                d_phi = np.zeros(ev_size)
-                for jj in range(ev_size):
-                    d_phi[jj] = ang_diff(phi_cur, phis[jj])
-
-                dr2 = d_eta ** 2 + d_phi ** 2
-                dr2 *= F_CONV2
-
-                pts_mask = (dr2 >= MIN_DR2) & (dr2 <= MAX_DR2)
-                pts_to_sum = np.where(pts_mask, pts, zeros_vector)
-                pt_sum = np.sum(pts_to_sum)
-
-                if pt_sum <= (MAX_ISO * pt_cur):
-                    iso_mask[ii] = 1
+with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200.hdf5", "r") as f_in:
+    with h5py.File(DATA_PATH + "foo.hdf5", "w") as f_out:
+        ev_idxs = [int(key) for key in f_in.keys()]
+        ev_idxs.sort()
 
 
-            # combine masks and filter data based on **individual** characteristic
-            filter_mask = pdg_id_mask & iso_mask
+        for ev_idx in tqdm(ev_idxs):
+            grp_out = f_out.create_group(str(ev_idx))
 
-            pdg_ids = np.where(filter_mask, pdg_ids, zeros_vector)
-            etas = np.where(filter_mask, etas, zeros_vector)
-            phis = np.where(filter_mask, phis, zeros_vector)
-            pts = np.where(filter_mask, pts, zeros_vector)
+            grp = f_in[str(ev_idx)]
+            pts = grp["pt"][...]
+            etas = grp["eta"][...]
+            phis = grp["phi"][...]
+            pdg_ids = grp["pdg_id"][...]
+            
+            min_pt_count = 0
+            med_pt_count = 0
+            hig_pt_count = 0
+            is_filter = np.zeros(N_HIG, dtype=np.int16)
+            is_filter_idx = 0
 
-            # DIVIDE DATA INTO PT GROUPS
-            # find masks for med pt and high pt
-            min_pt_mask = pts >= MIN_PT
-            med_pt_mask = pts >= MED_PT
-            hig_pt_mask = pts >= HIG_PT
+            for i, (pt, pdg_id) in enumerate(zip(pts, pdg_ids)):
+                is_min_pt = pt >= MIN_PT * PT_CONV
+                is_pdg_id = (np.abs(pdg_id) == 211) or (np.abs(pdg_id) == 11)
+                
+                if (is_filter_idx < N_HIG) and is_min_pt and is_pdg_id:
+                    is_filter[is_filter_idx] = i + 1
+                    is_filter_idx += 1
+                    min_pt_count += 1
+                    
+                    if pt >= MED_PT * PT_CONV: med_pt_count += 1
+                    if pt >= HIG_PT * PT_CONV: hig_pt_count += 1
 
-            # fix masks so each particle belongs only to one group
-            min_pt_mask = np.logical_xor(min_pt_mask, med_pt_mask)
-            med_pt_mask = np.logical_xor(med_pt_mask, hig_pt_mask)
 
-            min_pt_mask = min_pt_mask.astype("int16")
-            med_pt_mask = med_pt_mask.astype("int16")
-            hig_pt_mask = hig_pt_mask.astype("int16")
+            is_filter_mask = is_filter > 0
+            skip_event = (min_pt_count < 3) or (med_pt_count < 2) or (hig_pt_count < 1)
 
-            etas_min_pt = np.where(min_pt_mask, etas, zeros_vector).astype("int32")
-            phis_min_pt = np.where(min_pt_mask, phis, zeros_vector).astype("int32")
+            is_iso_filter = np.zeros_like(is_filter, dtype=np.int16)
+            pts_iso_filter = np.zeros_like(is_filter, dtype=np.float32)
+            etas_iso_filter = np.zeros_like(is_filter, dtype=np.float32)
+            phis_iso_filter = np.zeros_like(is_filter, dtype=np.float32)
+            pdg_ids_iso_filter = np.zeros_like(is_filter, dtype=np.int16)
 
-            etas_med_pt = np.where(med_pt_mask, etas, zeros_vector).astype("int32")
-            phis_med_pt = np.where(med_pt_mask, phis, zeros_vector).astype("int32")
+            for i, idx in enumerate(is_filter):
+                if skip_event or (not idx):
+                    continue
+                
+                d_eta = etas[idx - 1] - etas
+                d_phi = phis[idx - 1] - phis
+                d_phi = np.where(d_phi < -np.pi, d_phi + 2 * np.pi, d_phi)
+                d_phi = np.where(d_phi > np.pi, d_phi - 2 * np.pi, d_phi)
+                dr2 = d_eta * d_eta + d_phi * d_phi
 
-            etas_hig_pt = np.where(hig_pt_mask, etas, zeros_vector).astype("int32")
-            phis_hig_pt = np.where(hig_pt_mask, phis, zeros_vector).astype("int32")
+                dr2_mask = (dr2 >= MIN_DR2) & (dr2 <= MAX_DR2)
+                pt_sum = np.sum(pts[dr2_mask])
 
-            if DEBUG_MASKS:
-                print("DATA AND MASKS")
-                df_angsep = pd.DataFrame(data=np.vstack((pdg_ids, phis, etas, pts, pdg_id_mask, iso_mask, filter_mask, min_pt_mask, med_pt_mask, hig_pt_mask)).T, 
-                                         columns=["DATA:PDG_ID", "DATA:PHIS", "DATA:ETAS", "DATA:PTS", "PDG_ID_MASK", "ISO_MASK", "PDG_ID & ISO MASK", "MIN_PT_MASK", "MED_PT_MASK", "HIGH_PT_MASK"], 
-                                         dtype="int32")
-                print(df_angsep)
-                print("\n\n")
+                if pt_sum <= (pts[idx - 1] * MAX_ISO):
+                    is_iso_filter[i] = idx
+                    pts_iso_filter[i] = pts[idx - 1]
+                    etas_iso_filter[i] = etas[idx - 1]
+                    phis_iso_filter[i] = phis[idx - 1]
+                    pdg_ids_iso_filter[i] = pdg_ids[idx - 1]
 
-            # CALCULATE ANGULAR SEPARATION
-            # variables to keep track of what's happening
+            is_iso_filter_mask = is_iso_filter > 0
+            skip_event = (np.sum(is_iso_filter_mask) < 3)
+
+            triplet_idxs = np.zeros(3, dtype=np.int16)
+            invariant_mass = 0
+            w_mass = 0
+            triplet_score = 0
             best_triplet_score = 0
-            triplet_idxs = []
-            reco_mass = 0
 
-            n_hig_pt = np.sum(hig_pt_mask)
-
-            for ii in range(n_hig_pt):
-                # take the index of the next entry inside hig_pt_mask
-                hig_target_idx0 = np.nonzero(hig_pt_mask)[0][ii].astype("int16")
-                eta_hig_pt_target0 = etas_hig_pt[hig_target_idx0]
-                phi_hig_pt_target0 = phis_hig_pt[hig_target_idx0]
-
-                # create a new hig pt mask that excludes the selected hig pt particle
-                hig_pt_mask_cur0 = np.copy(hig_pt_mask)
-                hig_pt_mask_cur0[hig_target_idx0] = 0
-
-                # calculate ang sep between the current hig pt particle and
-                # all the other hig pt particles
-                d_eta = eta_hig_pt_target0 - etas_hig_pt
-
-                d_phi = np.zeros(ev_size)
-                for yy in range(ev_size):
-                    d_phi[yy] = ang_diff(phi_hig_pt_target0, phis_hig_pt[yy])
-
-                dr2 = d_eta ** 2 + d_phi ** 2
-                dr2 = dr2 * F_CONV2
-                is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
-
-                angsep0 = np.where(hig_pt_mask_cur0, is_ge_mindr2, zeros_vector)
-                n_angsep0 = np.sum(angsep0)
-
-                if n_angsep0 < 2:
+            for i0, idx0 in enumerate(is_iso_filter):
+                if skip_event or (not idx0):
                     continue
 
-                for jj in range(n_angsep0):
-                    # take the index of the next entry inside hig_pt_mask
-                    hig_target_idx1 = np.nonzero(angsep0)[0][jj].astype("int16")
-                    eta_hig_pt_target1 = etas_hig_pt[hig_target_idx1]
-                    phi_hig_pt_target1 = phis_hig_pt[hig_target_idx1]
-                    # create a new hig pt mask that excludes the selected hig pt par
-                    hig_pt_mask_cur1 = np.copy(angsep0)
-                    hig_pt_mask_cur1[hig_target_idx1] = 0
+                pt_hig_pt_target0 = pts_iso_filter[i0]
+                eta_hig_pt_target0 = etas_iso_filter[i0]
+                phi_hig_pt_target0 = phis_iso_filter[i0]
 
-                    # calculate ang sep between the current hig pt particle and
-                    # all the other hig pt particles
-                    d_eta = eta_hig_pt_target1 - etas_hig_pt
-                    d_phi = np.zeros(ev_size)
-                    for yy in range(ev_size):
-                        d_phi[yy] = ang_diff(phi_hig_pt_target1, phis_hig_pt[yy])
-
-                    dr2 = d_eta ** 2 + d_phi ** 2
-                    dr2 = dr2 * F_CONV2
-                    is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
-
-                    angsep1 = np.where(hig_pt_mask_cur1, is_ge_mindr2, zeros_vector)
-                    n_angsep1 = np.sum(angsep1)
-
-                    if n_angsep1 < 1:
+                for i1, idx1 in enumerate(is_iso_filter):
+                    if (i0 == i1) or (not idx1):
                         continue
 
-                    for kk in range(n_angsep1):
-                        # take the index of the next entry inside hig_pt_mask
-                        hig_target_idx2 = np.nonzero(angsep1)[0][kk].astype("int16")
-                        eta_hig_pt_target2 = etas_hig_pt[hig_target_idx2]
-                        phi_hig_pt_target2 = phis_hig_pt[hig_target_idx2]
+                    d_eta = eta_hig_pt_target0 - etas_iso_filter[i1]
+                    d_phi = phi_hig_pt_target0 - phis_iso_filter[i1]
+                    d_phi = d_phi if (d_phi <= np.pi) else d_phi - 2 * np.pi
+                    d_phi = d_phi if (d_phi >= -np.pi) else d_phi + 2 * np.pi
+                    dr2 = d_eta * d_eta + d_phi * d_phi
 
-                        d_eta = eta_hig_pt_target2 - eta_hig_pt_target0 # now it's a scalar
-                        d_phi = ang_diff(phi_hig_pt_target2, phi_hig_pt_target0) # now it's a scalar
+                    if (dr2 < MIN_DR2_ANGSEP):
+                        continue
 
-                        dr2 = d_eta ** 2 + d_phi ** 2
-                        dr2 = dr2 * F_CONV2
-                        is_ge_mindr2 = dr2 >= MIN_DR2_ANGSEP
+                    pt_hig_pt_target1 = pts_iso_filter[i1]
+                    eta_hig_pt_target1 = etas_iso_filter[i1]
+                    phi_hig_pt_target1 = phis_iso_filter[i1]
 
-                        if not is_ge_mindr2:
+                    for i2, idx2 in enumerate(is_iso_filter):
+                        if (i2 == i0) or (i2 == i1) or (not idx2):
                             continue
 
-                        charges = [np.sign(pdg_ids[p_idx]) if np.abs(pdg_ids[p_idx]) == 211 else -np.sign(pdg_ids[p_idx]) for p_idx in [hig_target_idx0, hig_target_idx1, hig_target_idx2]]
-                        abs_charge = np.abs(np.sum(charges))
+                        d_eta = eta_hig_pt_target1 - etas_iso_filter[i2]
+                        d_phi = phi_hig_pt_target1 - phis_iso_filter[i2]
+                        d_phi = d_phi if (d_phi <= np.pi) else d_phi - 2 * np.pi
+                        d_phi = d_phi if (d_phi >= -np.pi) else d_phi + 2 * np.pi
+                        dr2 = d_eta * d_eta + d_phi * d_phi
 
-                        if abs_charge == 1:
-                            mass1 = 0.13957039 if (np.abs(charges[0]) > 0) else 0.1349768
-                            px1 = pts[hig_target_idx0] * PT_CONV * np.cos(phis[hig_target_idx0] * F_CONV)
-                            py1 = pts[hig_target_idx0] * PT_CONV * np.sin(phis[hig_target_idx0] * F_CONV)
-                            pz1 = pts[hig_target_idx0] * PT_CONV * np.sinh(etas[hig_target_idx0] * F_CONV)
-                            e1 = np.sqrt(px1 ** 2 + py1 ** 2 + pz1 ** 2 + mass1 ** 2)
+                        if (dr2 < MIN_DR2_ANGSEP):
+                            continue
 
-                            mass2 = 0.13957039 if (np.abs(charges[1]) > 0) else 0.1349768
-                            px2 = pts[hig_target_idx1] * PT_CONV * np.cos(phis[hig_target_idx1] * F_CONV)
-                            py2 = pts[hig_target_idx1] * PT_CONV * np.sin(phis[hig_target_idx1] * F_CONV)
-                            pz2 = pts[hig_target_idx1] * PT_CONV * np.sinh(etas[hig_target_idx1] * F_CONV)
-                            e2 = np.sqrt(px2 ** 2 + py2 ** 2 + pz2 ** 2 + mass2 ** 2)
+                        pt_hig_pt_target2 = pts_iso_filter[i2]
+                        eta_hig_pt_target2 = etas_iso_filter[i2]
+                        phi_hig_pt_target2 = phis_iso_filter[i2]
 
-                            mass3 = 0.13957039 if (np.abs(charges[2]) > 0) else 0.1349768
-                            px3 = pts[hig_target_idx2] * PT_CONV * np.cos(phis[hig_target_idx2] * F_CONV)
-                            py3 = pts[hig_target_idx2] * PT_CONV * np.sin(phis[hig_target_idx2] * F_CONV)
-                            pz3 = pts[hig_target_idx2] * PT_CONV * np.sinh(etas[hig_target_idx2] * F_CONV)
-                            e3 = np.sqrt(px3 ** 2 + py3 ** 2 + pz3 ** 2 + mass3 ** 2)
+                        charge0 = np.sign(pdg_ids_iso_filter[i0]) if np.abs(pdg_ids_iso_filter[i0]) == 211 else -np.sign(pdg_ids_iso_filter[i0])
+                        charge1 = np.sign(pdg_ids_iso_filter[i1]) if np.abs(pdg_ids_iso_filter[i1]) == 211 else -np.sign(pdg_ids_iso_filter[i1])
+                        charge2 = np.sign(pdg_ids_iso_filter[i2]) if np.abs(pdg_ids_iso_filter[i2]) == 211 else -np.sign(pdg_ids_iso_filter[i2])
+                        charge_tot = charge0 + charge1 + charge2
 
-                            px_tot = px1 + px2 + px3
-                            py_tot = py1 + py2 + py3
-                            pz_tot = pz1 + pz2 + pz3
-                            e_tot = e1 + e2 + e3
+                        if np.abs(charge_tot) != 1:
+                            continue
 
-                            e_tot2 = e_tot ** 2
-                            p_tot2 = px_tot ** 2 + py_tot ** 2 + pz_tot ** 2
+                        px0 = pt_hig_pt_target0 * np.cos(phi_hig_pt_target0)
+                        py0 = pt_hig_pt_target0 * np.sin(phi_hig_pt_target0)
+                        pz0 = pt_hig_pt_target0 * np.sinh(eta_hig_pt_target0)
+                        e0 = np.sqrt(px0 * px0 + py0 * py0 + pz0 * pz0 + MASS_P * MASS_P)
 
-                            invariant_mass = np.sqrt(e_tot2 - p_tot2)
+                        px1 = pt_hig_pt_target1 * np.cos(phi_hig_pt_target1)
+                        py1 = pt_hig_pt_target1 * np.sin(phi_hig_pt_target1)
+                        pz1 = pt_hig_pt_target1 * np.sinh(eta_hig_pt_target1)
+                        e1 = np.sqrt(px1 * px1 + py1 * py1 + pz1 * pz1 + MASS_P * MASS_P)
 
-                            if (invariant_mass >= MIN_MASS) and (invariant_mass <= MAX_MASS):
-                                triplet_score = pts[hig_target_idx0] + pts[hig_target_idx1] + pts[hig_target_idx2]
+                        px2 = pt_hig_pt_target2 * np.cos(phi_hig_pt_target2)
+                        py2 = pt_hig_pt_target2 * np.sin(phi_hig_pt_target2)
+                        pz2 = pt_hig_pt_target2 * np.sinh(eta_hig_pt_target2)
+                        e2 = np.sqrt(px2 * px2 + py2 * py2 + pz2 * pz2 + MASS_P * MASS_P)
 
-                                if triplet_score > best_triplet_score:
-                                    best_triplet_score = triplet_score
-                                    triplet_idxs = [hig_target_idx0, hig_target_idx1, hig_target_idx2]
-                                    reco_mass = invariant_mass
+                        px_tot = px0 + px1 + px2
+                        py_tot = py0 + py1 + py2
+                        pz_tot = pz0 + pz1 + pz2
+                        e_tot = e0 + e1 + e2
 
-            if (len(triplet_idxs) > 0):
-                ev_idx_list.append(k)
-                part_idxs_list.append(triplet_idxs)
-                reco_mass_list.append(reco_mass)    
+                        invariant_mass = np.sqrt(e_tot * e_tot - px_tot * px_tot - py_tot * py_tot - pz_tot * pz_tot)
+
+                        if (invariant_mass < MIN_MASS) or (invariant_mass > MAX_MASS):
+                            continue
+                        
+                        triplet_score = pt_hig_pt_target0 + pt_hig_pt_target1 + pt_hig_pt_target2
+
+                        if triplet_score > best_triplet_score:
+                            best_triplet_score = triplet_score
+                            triplet_idxs[0] = idx0 - 1
+                            triplet_idxs[1] = idx1 - 1
+                            triplet_idxs[2] = idx2 - 1
+                            w_mass = invariant_mass
+
+            grp_out.create_dataset("reco_triplet_idxs", data=triplet_idxs, dtype=np.int16)
+            grp_out.create_dataset("reco_w_mass", data=w_mass, dtype=np.float32)
 
 
 
 
-if __name__ == "__main__":
-    main()
+
+
+
