@@ -5,7 +5,7 @@
         "${workspaceFolder}/data-processing/cpp-version",
         "~/root/include/"
     ], 
-    "C_Cpp.intelliSenseEngine": "Tag Parser", 
+    "C_Cpp.intelliSenseEngine": "default", 
     "C_Cpp.default.intelliSenseMode": "gcc-x64",
     "files.associations": {
         "iostream": "cpp",

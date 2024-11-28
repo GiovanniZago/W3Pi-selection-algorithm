@@ -69,7 +69,6 @@ class PuppiData:
         for idx, line_str in zip(list(range(idx_start, idx_end)), lines_str):
             header = self._unpack_header(line_str)
 
-
             if (int.from_bytes(line_str) == 0): 
                 is_null = True
             else:
@@ -95,7 +94,6 @@ class PuppiData:
             print("\n\n")
 
         self._print_table(particles_data, self.part_columns)
-    
 
     def pad_file(self, ev_size, out_file_name, include_headers=False):
         if not self.file:
@@ -190,6 +188,40 @@ class PuppiData:
 
                 row_data = struct.unpack("q", row_bytes)
                 puppi_csv.write("DATA," + f"{str(row_data[0])}," + "0," + "-1\n")
+
+    def to_aiecsv64_unpacked(self):
+        if not self.file:
+            raise ValueError("File not opened. Call self.open_file() first or enter the context.")
+        
+        file_out_name = str.split(self.file_name, ".")[0] + "_unpacked.csv"
+        
+        with open(self.data_path + "/aie_data/" + file_out_name, "w") as puppi_csv:
+            puppi_csv.write("CMD,D,D,D,D,TLAST,TKEEP\n")
+
+            while True:
+                row_bytes = self.file.read(self.line_size)
+
+                if not row_bytes:
+                    break
+                
+                row_data = struct.unpack("q", row_bytes)
+
+                if row_data[0]:
+                    next_row_bytes = self.file.read(self.line_size) # reading the next line causes the cursor to advance of 8 bytes 
+                    next_row_data = struct.unpack("q", next_row_bytes)
+                    
+                    # check if the next line contains only a zero or if it contains data
+                    if next_row_data[0]:
+                        part_dict = self._unpack_particle(row_bytes)
+                        part_dict["pdg_id"] = self._get_raw_pdgid(part_dict["pdg_id"])
+                        puppi_csv.write("DATA," + f"{part_dict['pt']}," + f"{part_dict['eta']}," + f"{part_dict['phi']}," + f"{part_dict['pdg_id']}," + "0,-1\n")
+
+                    else:
+                        part_dict = self._unpack_particle(row_bytes)
+                        part_dict["pdg_id"] = self._get_raw_pdgid(part_dict["pdg_id"])
+                        puppi_csv.write("DATA," + f"{part_dict['pt']}," + f"{part_dict['eta']}," + f"{part_dict['phi']}," + f"{part_dict['pdg_id']}," + "1,-1\n") # assert tlast here
+
+                    self.file.seek(-8, 1) # put the curson of the file back to the previous position, namely shift it 8 bytes back
 
     def to_hdf5(self, ev_size, has_headers=False):
         if not self.file:
@@ -391,12 +423,38 @@ class PuppiData:
             "pt": pt
         }
     
+    def _get_raw_pdgid(self, pdg_id):
+        match pdg_id:
+            case 130:
+                return 0
+
+            case 22:
+                return 1
+
+            case -211:
+                return 2
+
+            case 211:
+                return 3
+
+            case 11:
+                return 4
+
+            case -11:
+                return 5
+
+            case 13:
+                return 6
+
+            case -13:
+                return 7
+    
 if __name__ == "__main__":
-    file = "Puppi.dump"
+    # file = "Puppi.dump"
     # file = "Puppi_224.dump"
     # file = "Puppi_104_nh.dump"
     # file = "Puppi_208_nh.dump"
     # file = "puppi_WTo3Pion_PU200.dump"
-    # file = "PuppiSignal_224.dump"
+    file = "PuppiSignal_224.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.print_lines_data(0, 225)
+        myPuppi.to_aiecsv64_unpacked()
