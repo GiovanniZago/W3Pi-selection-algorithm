@@ -19,9 +19,13 @@ cor_gm_mass = []
 par_cppreco_mass = []
 par_gm_mass = []
 
+evt_list = np.arange(2000)
+
 with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200.hdf5", "r") as f_gm:
     with h5py.File(DATA_PATH + "l1Nano_WTo3Pion_PU200_cppreco.hdf5", "r") as f_cppreco:
         for (grp_name_gm, grp_gm) in tqdm(f_gm.items()):
+            if int(grp_name_gm) not in evt_list:
+                continue
 
             if grp_name_gm not in f_cppreco.keys():
                 raise ValueError("The event should be inside f_aiereco")

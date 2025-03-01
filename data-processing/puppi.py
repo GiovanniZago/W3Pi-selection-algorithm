@@ -450,11 +450,11 @@ class PuppiData:
                 return 7
     
 if __name__ == "__main__":
-    # file = "Puppi.dump"
+    file = "Puppi.dump"
     # file = "Puppi_224.dump"
     # file = "Puppi_104_nh.dump"
     # file = "Puppi_208_nh.dump"
     # file = "puppi_WTo3Pion_PU200.dump"
-    file = "PuppiSignal_224.dump"
+    # file = "PuppiSignal_224.dump"
     with PuppiData(file) as myPuppi:
-        myPuppi.to_aiecsv64_unpacked()
+        myPuppi.print_lines_data(110_800, 111_100)
